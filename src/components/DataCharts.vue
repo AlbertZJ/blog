@@ -28,6 +28,7 @@
       var _this = this;
       getRequest("/article/dataStatistics").then(resp=> {
         if (resp.status == 200) {
+           // _this.$alert(resp.data);
           _this.$refs.dschart.options.xAxis.data = resp.data.categories;
           _this.$refs.dschart.options.series[0].data = resp.data.ds;
         } else {

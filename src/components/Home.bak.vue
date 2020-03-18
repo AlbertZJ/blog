@@ -12,7 +12,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="sysMsg">系统消息</el-dropdown-item>
             <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>
-            <el-dropdown-item command="MyHome">个人主页</el-dropdown-item>
+            <el-dropdown-item command="MyHome" divided>个人主页</el-dropdown-item>
             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -68,6 +68,12 @@
             //取消
           })
         }
+          if (command==='sysMsg') {
+              this.$alert('欢迎来到微社区管理平台，请遵守相关约定！', '友情提示', {
+                  confirmButtonText: '确定',
+                  callback: action => {
+                  }
+              });
       }
     },
     mounted: function () {

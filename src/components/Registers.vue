@@ -2,16 +2,16 @@
   <body id="paper">
   <el-form :rules="rules" class="login-container" label-position="left"
            label-width="0px" v-loading="loading">
-    <h3 class="login_title">微社区</h3>
+    <h3 class="login_title">用户注册</h3>
     <el-form-item prop="account">
       <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="checkPass">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
-    <el-checkbox class="login_remember" v-model="checked" label-position="left"><span style="color: #505458">记住密码</span></el-checkbox>
+
     <el-form-item style="width: 100%">
-      <el-button type="primary" @click.native.prevent="submitClick" style="width: 70%;background: #505458;border: none">登录</el-button>
+      <el-button type="primary" @click.native.prevent="submitClick" style="width: 40%;background: #505458;border: none">注册</el-button>
     </el-form-item>
   </el-form>
   </body>
@@ -28,8 +28,8 @@
                 },
                 checked: true,
                 loginForm: {
-                    username: '',
-                    password: ''
+                    username: 'zengjian',
+                    password: '123'
                 },
                 loading: false
             }
@@ -38,29 +38,31 @@
             submitClick: function () {
                 var _this = this;
                 this.loading = true;
-               // this.$alert(this.loginForm.password);
-                postRequest('/login', {
+                postRequest('/register', {
                     username: this.loginForm.username,
-                    password: this.loginForm.password
+                    password: this.loginForm.password,
                 }).then(resp => {
-                    _this.loading = false;
+
                     if (resp.status == 200) {
                         //成功
                         var json = resp.data;
                         if (json.status == 'success') {
-                            _this.$router.replace({path: '/home'});
+                            _this.$router.replace({path: '/login'});
                         } else {
-                            _this.$alert('账号或密码错误!', '登录失败!');
+                            _this.$alert('账号或密码错误!', '注册失败!');
                         }
                     } else {
                         //失败
-                        _this.$alert('账号或密码错误!', '登录失败!');
+                        _this.$alert('账号或密码错误!', '注册失败!');
                     }
+                    _this.loading = false;
                 }, resp => {
                     _this.loading = false;
-                    _this.$alert('找不到服务器!', '登录失败!');
+                    _this.$alert('找不到服务!', '注册失败!');
                 });
             }
+
+
         }
     }
 </script>
@@ -94,9 +96,9 @@
     margin: 0px 0px 35px 0px;
     text-align: left;
   }
-  .login_button {
-  background: #505458;
-  }
+  /*.login_button {*/
+  /*background: #505458;*/
+  /*}*/
   /*el_checkbox {*/
   /*background: #505458;*/
   /*}*/

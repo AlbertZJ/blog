@@ -11,24 +11,10 @@
 <template>
   <div>
     <div style="display: flex;justify-content: flex-start">
-    <el-select  v-model="cate"  placeholder="通过栏目搜索该分类下的文章"
-                prefix-icon="el-icon-search" style="width: 300px;" size="mini">
-      <el-option
-        v-for="item in categories"
-        :key="item.id"
-        :label="item.cateName"
-        :value="item.cateName">
-      </el-option>
-    </el-select>
-      <el-button type="primary" icon="el-icon-search" size="mini" style="margin-left: 3px" @click="looked">查看
-      </el-button>
-    </div>
-    <br/>
-    <div style="display: flex;justify-content: flex-start">
       <el-input
-        placeholder="通过标题搜索该分类下的文章"
+        placeholder="通过关键字搜索包含该关键字下的公告"
         prefix-icon="el-icon-search"
-        v-model="keywords" style="width: 300px" size="mini">
+        v-model="keywords" style="width: 400px" size="mini">
       </el-input>
       <el-button type="primary" icon="el-icon-search" size="mini" style="margin-left: 3px" @click="searchClick">搜索
       </el-button>
@@ -36,7 +22,7 @@
     <!--<div style="width: 100%;height: 1px;background-color: #20a0ff;margin-top: 8px;margin-bottom: 0px"></div>-->
     <el-table
       ref="multipleTable"
-      :data="articles"
+      :data="notice"
       tooltip-effect="dark"
       style="width: 100%;overflow-x: hidden; overflow-y: hidden;"
       max-height="390"
@@ -46,23 +32,23 @@
         width="35" align="left" v-if="showEdit || showDelete">
       </el-table-column>
       <el-table-column
-        label="标题"
+        label="公告内容"
         width="400" align="left">
-        <template slot-scope="scope"><span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.title}}</span>
+        <template slot-scope="scope"><span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.message}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        label="最近编辑时间" width="140" align="left">
-        <template slot-scope="scope">{{ scope.row.editTime | formatDateTime}}</template>
+        label="发布时间" width="140" align="left">
+        <template slot-scope="scope">{{ scope.row.publishDate | formatDateTime}}</template>
       </el-table-column>
       <el-table-column
         prop="nickname"
-        label="作者"
+        label="发布人"
         width="120" align="left">
       </el-table-column>
       <el-table-column
-        prop="cateName"
-        label="所属分类"
+        prop="news"
+        label="最近公告"
         width="120" align="left">
       </el-table-column>
       <el-table-column label="操作" align="left" v-if="showEdit || showDelete">
@@ -84,7 +70,7 @@
       </el-table-column>
     </el-table>
     <div class="blog_table_footer">
-      <el-button type="danger" size="mini" style="margin: 0px;" v-show="this.articles.length>0 && showDelete"
+      <el-button type="danger" size="mini" style="margin: 0px;" v-show="this.notice.length>0 && showDelete"
                  :disabled="this.selItems.length==0" @click="deleteMany">批量删除
       </el-button>
       <span></span>
@@ -92,7 +78,7 @@
         background
         :page-size="pageSize"
         layout="prev, pager, next"
-        :total="totalCount" @current-change="currentChange" v-show="this.articles.length>0">
+        :total="totalCount" @current-change="currentChange" v-show="this.notice.length>0">
       </el-pagination>
     </div>
   </div>
@@ -101,45 +87,35 @@
 <script>
     import {putRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
-    //  import Vue from 'vue'
-    //  var bus = new Vue()
 
     export default {
         data() {
             return {
-                articles: [],
+                notice: [],
                 selItems: [],
                 loading: false,
                 currentPage: 1,
                 totalCount: -1,
                 pageSize: 6,
-                keywords: '',
-                dustbinData: [],
-                cate:''
+                 keywords: '',
+                dustbinData: []
             }
         },
         mounted: function () {
-            this.getCategories();
-
             var _this = this;
             this.loading = true;
             this.loadBlogs(1, this.pageSize);
-            window.bus.$on('blogTableReload', function () {
+            window.bus.$on('noticeTableReload', function () {
                 _this.loading = true;
                 _this.loadBlogs(_this.currentPage, _this.pageSize);
             })
         },
         methods: {
-
             searchClick() {
                 this.loadBlogs(1, this.pageSize);
             },
-            looked() {
-               // this.$alert(this.cate);
-                this.loadBloged(1, this.pageSize);
-            },
             itemClick(row) {
-                this.$router.push({path: '/blogDetail', query: {aid: row.id}})
+                this.$router.push({path: '/noticeDetail', query: {aid: row.id}})
             },
             deleteMany() {
                 var selItems = this.selItems;
@@ -148,81 +124,35 @@
                 }
                 this.deleteToDustBin(selItems[0].state)
             },
-
-            getCategories(){
-                let _this = this;
-                getRequest("/admin/category/all").then(resp=> {
-                    _this.categories = resp.data;
-                });
-            },
-
             //翻页
             currentChange(currentPage) {
                 this.currentPage = currentPage;
                 this.loading = true;
-                if(this.keywords==""&&this.cate!=""){
-                    this.loadBloged(currentPage, this.pageSize);
-                }else{
-                    this.loadBlogs(currentPage, this.pageSize);
-                }
-            },
-            loadBloged(page, count) {
-                var _this = this;
-                var url = '';
-                 // _this.$alert(this.state);
-                if (this.state == -2) {
-                    url = "/admin/article/cate" + "?page=" + page + "&count=" + count + "&cate=" + this.cate;
-                    //  _this.$alert(url);
-                } else {
-                   //   _this.$alert("sff");
-                    url = "/article/cate?state=" + this.state + "&page=" + page + "&count=" + count + "&cate=" + this.cate;
-                }
-               // _this.$alert(url);
-                getRequest(url).then(resp => {
-                 //     _this.$alert(url);
-                    _this.loading = false;
-                    if (resp.status == 200) {
-                        _this.articles = resp.data.articles;
-                        _this.totalCount = resp.data.totalCount;
-
-                       // _this.$alert(_this.totalCount);
-                    } else {
-                        _this.$message({type: 'error', message: '数据加载失败!'});
-                    }
-                }, resp => {
-                    _this.loading = false;
-                    if (resp.response.status == 403) {
-                        _this.$message({type: 'error', message: resp.response.data});
-                    } else {
-                        _this.$message({type: 'error', message: '数据加载失败!'});
-                    }
-                }).catch(resp => {
-                    //压根没见到服务器
-                    _this.loading = false;
-                    _this.$message({type: 'error', message: '数据加载失败!'});
-                })
+                this.loadBlogs(currentPage, this.pageSize);
             },
             loadBlogs(page, count) {
                 var _this = this;
                 var url = '';
                // _this.$alert(this.state);
                 if (this.state == -2) {
-                    url = "/admin/article/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-             //  _this.$alert(url);
+                    url = "/admin/notice/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
+             //  _this.$alert(url+"jhg");
                 } else {
-                  //  _this.$alert("sff");
-                    url = "/article/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
+                    url = "/notice/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
+             //  _this.$alert(url);
                 }
                 getRequest(url).then(resp => {
-              //  _this.$alert(url);
+                  //  _this.$alert(resp.data);
                     _this.loading = false;
                     if (resp.status == 200) {
-                        _this.articles = resp.data.articles;
+                        _this.notice = resp.data.notice;
                         _this.totalCount = resp.data.totalCount;
+                      // _this.$alert( _this.notice );
                     } else {
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
                 }, resp => {
+                  //  _this.$alert("sadfasfd");
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({type: 'error', message: resp.response.data});
@@ -230,6 +160,7 @@
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
                 }).catch(resp => {
+                    // _this.$alert("sadfhonslsmjo");
                     //压根没见到服务器
                     _this.loading = false;
                     _this.$message({type: 'error', message: '数据加载失败!'});
@@ -239,9 +170,9 @@
                 this.selItems = val;
             },
             handleEdit(index, row) {
-                let _this = this;
-               // _this.$alert(this.activeName);
-                this.$router.push({path: '/editBlog', query: {from: this.activeName, id: row.id}});
+                // let _this = this;
+                // _this.$alert(row.message);
+                this.$router.push({path: '/editNotice', query: {from: this.noticeName, id: row.id}});
             },
             handleDelete(index, row) {
                 this.dustbinData.push(row.id);
@@ -249,18 +180,18 @@
             },
             handleRestore(index, row) {
                 let _this = this;
-                this.$confirm('将该文件还原到原处，是否继续？', '提示', {
+                this.$confirm('将该公告还原到原处，是否继续？', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
                     _this.loading = true;
-                    putRequest('/article/restore', {articleId: row.id}).then(resp => {
+                    putRequest('/notice/restore', {noticeId: row.id}).then(resp => {
                         if (resp.status == 200) {
                             var data = resp.data;
                             _this.$message({type: data.status, message: data.msg});
                             if (data.status == 'success') {
-                                window.bus.$emit('blogTableReload') // 通过选项卡都重新加载数据
+                                window.bus.$emit('noticeTableReload') // 通过选项卡都重新加载数据
                             }
                         } else {
                             _this.$message({type: 'error', message: '还原失败!'});
@@ -276,7 +207,7 @@
             },
             deleteToDustBin(state) {
                 var _this = this;
-                this.$confirm(state != 2 ? '将该文件放入回收站，是否继续?' : '永久删除该文件, 是否继续?', '提示', {
+                this.$confirm(state != 2 ? '将该公告放入回收站，是否继续?' : '永久删除该公告, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
@@ -284,16 +215,17 @@
                     _this.loading = true;
                     var url = '';
                     if (_this.state == -2) {
-                        url = "/admin/article/dustbin";
+                        url = "/admin/notice/dustbin";
                     } else {
-                        url = "/article/dustbin";
+                        url = "/notice/dustbin";
                     }
                     putRequest(url, {aids: _this.dustbinData, state: state}).then(resp => {
                         if (resp.status == 200) {
                             var data = resp.data;
                             _this.$message({type: data.status, message: data.msg});
+                          //  _this.$alert(data.status);
                             if (data.status == 'success') {
-                                window.bus.$emit('blogTableReload')  // 通过选项卡都重新加载数据
+                                window.bus.$emit('noticeTableReload')  // 通过选项卡都重新加载数据
                             }
                         } else {
                             _this.$message({type: 'error', message: '删除失败!'});
@@ -314,6 +246,7 @@
                 });
             }
         },
-        props: ['state', 'showEdit', 'showDelete', 'activeName', 'showRestore']
+        props: ['state', 'showEdit', 'showDelete', 'noticeName', 'showRestore']
     }
 </script>
+

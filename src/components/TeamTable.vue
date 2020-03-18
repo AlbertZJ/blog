@@ -10,20 +10,11 @@
 </style>
 <template>
   <div>
-    <div style="display: flex;justify-content: flex-start">
-    <el-select  v-model="cate"  placeholder="通过栏目搜索该分类下的文章"
-                prefix-icon="el-icon-search" style="width: 300px;" size="mini">
-      <el-option
-        v-for="item in categories"
-        :key="item.id"
-        :label="item.cateName"
-        :value="item.cateName">
-      </el-option>
-    </el-select>
-      <el-button type="primary" icon="el-icon-search" size="mini" style="margin-left: 3px" @click="looked">查看
-      </el-button>
-    </div>
-    <br/>
+<!--    <el-col :span="24">-->
+<!--      <div style="text-align: left;">-->
+<!--        <el-button type="text" icon="el-icon-back" @click="goBack" style="padding-bottom: 0px;">返回</el-button>-->
+<!--      </div>-->
+<!--    </el-col>-->
     <div style="display: flex;justify-content: flex-start">
       <el-input
         placeholder="通过标题搜索该分类下的文章"
@@ -135,7 +126,7 @@
                 this.loadBlogs(1, this.pageSize);
             },
             looked() {
-               // this.$alert(this.cate);
+                // this.$alert(this.cate);
                 this.loadBloged(1, this.pageSize);
             },
             itemClick(row) {
@@ -169,23 +160,23 @@
             loadBloged(page, count) {
                 var _this = this;
                 var url = '';
-                 // _this.$alert(this.state);
+                // _this.$alert(this.state);
                 if (this.state == -2) {
                     url = "/admin/article/cate" + "?page=" + page + "&count=" + count + "&cate=" + this.cate;
                     //  _this.$alert(url);
                 } else {
-                   //   _this.$alert("sff");
+                    //   _this.$alert("sff");
                     url = "/article/cate?state=" + this.state + "&page=" + page + "&count=" + count + "&cate=" + this.cate;
                 }
-               // _this.$alert(url);
+                // _this.$alert(url);
                 getRequest(url).then(resp => {
-                 //     _this.$alert(url);
+                    //     _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
                         _this.totalCount = resp.data.totalCount;
 
-                       // _this.$alert(_this.totalCount);
+                        // _this.$alert(_this.totalCount);
                     } else {
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
@@ -205,16 +196,12 @@
             loadBlogs(page, count) {
                 var _this = this;
                 var url = '';
-               // _this.$alert(this.state);
-                if (this.state == -2) {
-                    url = "/admin/article/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-             //  _this.$alert(url);
-                } else {
-                  //  _this.$alert("sff");
-                    url = "/article/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-                }
+                var aid = this.$route.query.aid;
+                // _this.$alert(this.state);
+                var uid = this.$route.query.uid;
+                    url = "/article/alls?state=" +1+ "&page=" + page + "&count=" + count + "&uid=" + uid+ "&keywords=" + this.keywords;
                 getRequest(url).then(resp => {
-              //  _this.$alert(url);
+                    //  _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
@@ -240,7 +227,7 @@
             },
             handleEdit(index, row) {
                 let _this = this;
-               // _this.$alert(this.activeName);
+                // _this.$alert(this.activeName);
                 this.$router.push({path: '/editBlog', query: {from: this.activeName, id: row.id}});
             },
             handleDelete(index, row) {
@@ -273,6 +260,9 @@
                         message: '已取消还原'
                     });
                 });
+            },
+            goBack(){
+                this.$router.go(-1);
             },
             deleteToDustBin(state) {
                 var _this = this;

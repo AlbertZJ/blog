@@ -7,6 +7,7 @@
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增栏目</el-button>
     </el-header>
+
     <el-main class="cate_mana_main">
       <el-table
         ref="multipleTable"
@@ -63,7 +64,8 @@
       addNewCate(){
         this.loading = true;
         var _this = this;
-        postRequest('/admin/category/', {cateName: this.cateName}).then(resp=> {
+        postRequest('/admin/category/regist', {cateName: this.cateName}).then(resp=> {
+           // _this.$alert(resp.status);
           if (resp.status == 200) {
             var json = resp.data;
             _this.$message({type: json.status, message: json.msg});
@@ -179,6 +181,7 @@
         let _this = this;
         getRequest("/admin/category/all").then(resp=> {
           _this.categories = resp.data;
+          //  _this.$alert(resp.data);
           _this.loading = false;
         }, resp=> {
           if (resp.response.status == 403) {

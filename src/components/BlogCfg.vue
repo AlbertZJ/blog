@@ -6,7 +6,7 @@
                  style="color:#20a0ff;font-size: 14px;">
           <el-form-item
             prop="email"
-            label="开启文章评论通知"
+            label="开启文章评论"
             :rules="[{type: 'email', message: '邮箱格式不对!'}]">
             <el-input type="email" v-model.email="emailValidateForm.email" auto-complete="off" style="width: 300px"
                       placeholder="请输入邮箱地址..." size="mini"></el-input>
@@ -46,6 +46,7 @@
             putRequest("/updateUserEmail", {email: _this.emailValidateForm.email}).then(resp=> {
               _this.loading = false;
               if (resp.status == 200) {
+                 // _this.$alert(resp.data.status+resp.data.msg);
                 _this.$message({type: resp.data.status, message: resp.data.msg});
               } else {
                 _this.$message({type: 'error', message: '开启失败!'});

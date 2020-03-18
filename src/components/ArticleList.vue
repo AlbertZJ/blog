@@ -14,12 +14,15 @@
         <el-tab-pane label="回收站" name="dustbin">
           <blog_table state="2" :showEdit="false" :showDelete="true" :showRestore="true" :activeName="activeName"></blog_table>
         </el-tab-pane>
+        <el-tab-pane label="浏览文章" name="seeblog" >
+          <blog_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false" :activeName="activeName"></blog_table>
+        </el-tab-pane>
         <el-tab-pane label="文章管理" name="blogmana" v-if="isAdmin">
           <blog_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false" :activeName="activeName"></blog_table>
         </el-tab-pane>
-        <el-tab-pane label="文章配置" name="blogcfg">
-          <blog_cfg></blog_cfg>
-        </el-tab-pane>
+<!--        <el-tab-pane label="文章配置" name="blogcfg">-->
+<!--          <blog_cfg></blog_cfg>-->
+<!--        </el-tab-pane>-->
       </el-tabs>
     </el-main>
   </el-container>
@@ -34,8 +37,10 @@
   export default {
     mounted: function () {
       var _this = this;
-      getRequest("/isAdmin").then(resp=> {
+      getRequest("/isArticle").then(resp=> {
+
         if (resp.status == 200) {
+         //  _this.$alert(resp.data+"article");
           _this.isAdmin = resp.data;
         }
       })
