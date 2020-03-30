@@ -1,5 +1,5 @@
 # blog
-微社区：一个有用的社区技术交流平台
+微社区前端：一个有用的社区技术交流平台
 1.克隆前端项目代码
 https://github.com/AlbertZJ/blog.git
 
