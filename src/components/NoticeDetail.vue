@@ -5,8 +5,19 @@
         <el-button type="text" icon="el-icon-back" @click="goBack" style="padding-bottom: 0px;">返回</el-button>
       </div>
     </el-col>
+    <el-col :span="24">
+      <div>
+        <div><h3 style="margin-top: 0px;margin-bottom: 0px" v-model="notice.title">{{notice.title}}</h3></div>
+        <div style="width: 100%;margin-top: 5px;display: flex;justify-content: flex-end;align-items: center">
+          <div style="display: inline; color: #20a0ff;margin-left: 50px;margin-right:20px;font-size: 12px;" v-model="notice.nickname">
+            {{notice.nickname}}
+          </div>
+          <span style="color: #20a0ff;margin-right:20px;font-size: 12px;"> {{notice.publishDate | formatDateTime}}</span>
+        </div>
+      </div>
+    </el-col>
     <el-col>
-      <div style="text-align: left" v-html="notice.message">
+      <div style="text-align: left" v-html="notice.htmlContent">
       </div>
     </el-col>
   </el-row>

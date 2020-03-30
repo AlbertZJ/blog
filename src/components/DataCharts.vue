@@ -63,14 +63,14 @@
           },
           tooltip: {},
           legend: {
-            data: ['pv']
+            data: ['浏览数']
           },
           xAxis: {
             data: []
           },
           yAxis: {},
           series: [{
-            name: 'pv',
+            name: '浏览数',
             type: 'line',
             data: []
           }],

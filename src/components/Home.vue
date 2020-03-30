@@ -80,21 +80,9 @@
             //取消
           })
         }else if(command==='sysMsg'){
-
-            // getRequest("/notice/show").then(function (msg) {
-            //   //  _this.$alert(msg.data);
-            //     _this.$alert(msg.data.message, '友情提示', {
-            //         confirmButtonText:'确定',
-            //         callback:action => {
-            //
-            //         }
-            //     });
-            //
-            // });
-
             getRequest("/notice/sys").then(function (msg) {
-                //  _this.$alert(msg.data);
-                _this.$alert(msg.data.message, '公告', {
+                  _this.$alert(msg.data);
+                _this.$alert(msg.data.message, msg.data.title, {
                     confirmButtonText:'确定',
                     callback:action => {
 
@@ -111,8 +99,8 @@
     },
     mounted: function () {
         getRequest("/notice/sys").then(function (msg) {
-            //  _this.$alert(msg.data);
-            _this.$alert(msg.data.message, '公告', {
+            _this.$alert(msg.data);
+            _this.$alert(msg.data.message, msg.data.title, {
                 confirmButtonText:'确定',
                 callback:action => {
 
@@ -120,12 +108,6 @@
             });
 
         });
-
-      // this.$alert('欢迎来到微社区管理平台，请遵守相关约定！', '友情提示', {
-      //   confirmButtonText: '确定',
-      //   callback: action => {
-      //   }
-      // });
       var _this = this;
       getRequest("/currentUserName").then(function (msg) {
         _this.currentUserName = msg.data;

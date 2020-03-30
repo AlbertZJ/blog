@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loading">
-    <div style="margin-top: 10px;display: flex;justify-content: center">
+    <div style="margin-top: 10px;display: flex;justify-content: center" v-if="isAdmin">
       <el-input
         placeholder="默认展示部分用户，可以通过用户名搜索用户..."
         prefix-icon="el-icon-search"
@@ -9,7 +9,7 @@
       <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 3px" @click="searchClick">搜索
       </el-button>
     </div>
-    <el-header class="cate_mana_header">
+    <el-header class="cate_mana_header" v-if="isAdmin">
       <el-input
         placeholder="请输入账号"
         v-model="username" style="width: 200px;">
@@ -91,6 +91,13 @@
     import {deleteRequest} from '../utils/api'
     export default{
         mounted: function () {
+            var _this = this;
+            getRequest("/isAdmin").then(resp=> {
+                if (resp.status == 200) {
+                    // _this.$alert(resp.data+"notice");
+                    _this.isAdmin = resp.data;
+                }
+            });
             this.loading = true;
             this.loadUserList();
             this.cardloading = Array.apply(null, Array(20)).map(function (item, i) {
@@ -179,7 +186,7 @@
                     type: 'warning'
                 }).then(() => {
                     _this.loading = true;
-                    deleteRequest("/admin/user/" + id).then(resp=> {
+                    putRequest("/admin/user/" + id).then(resp=> {
                         if (resp.status == 200 && resp.data.status == 'success') {
                             _this.$message({type: 'success', message: '删除成功!'})
                             _this.loadUserList();

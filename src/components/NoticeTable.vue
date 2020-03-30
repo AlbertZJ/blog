@@ -32,6 +32,12 @@
         width="35" align="left" v-if="showEdit || showDelete">
       </el-table-column>
       <el-table-column
+        label="公告标题"
+        width="400" align="left">
+        <template slot-scope="scope"><span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.title}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         label="公告内容"
         width="400" align="left">
         <template slot-scope="scope"><span style="color: #409eff;cursor: pointer" @click="itemClick(scope.row)">{{ scope.row.message}}</span>

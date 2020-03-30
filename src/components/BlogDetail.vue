@@ -122,7 +122,7 @@
                 }else{
                     //  _this.$alert(this.favorite+"s");
                     if(this.favorite!="已收藏") {
-                        //  _this.$alert("_this.favorite");
+                         // _this.$alert("_this.favorite");
                         putRequest("/favorite/changed", {aid: this.article.id, state: 1}).then(resp => {
                             if (resp.status == 200) {
                                 var json = resp.data;
@@ -137,7 +137,7 @@
                             _this.loading = false;
                         });
                     }else{
-                        putRequest("/favorite/changed", {aid: this.article.id, state: 2}).then(resp => {
+                        putRequest("/favorite/changeds", {aid: this.article.id, state: 2}).then(resp => {
                             if (resp.status == 200) {
                                 var json = resp.data;
                                //  _this.$alert(json);
@@ -176,19 +176,19 @@
              // _this.$alert(this.article.id);
             getRequest("/currentUserId").then(function (msg) {
                 var id = msg.data;
-                _this.$alert(aid+content+"-1")
+              //  _this.$alert(aid+content+"-1")
                 postRequest('/comment/add', {
                     aid: aid,
                     content: content,
                     parentId: -1,
                     uid: id
                 }).then(resp => {
-                    _this.$alert(resp.status);
+                  //  _this.$alert(resp.status);
                     if (resp.status == 200) {
                         var json = resp.data;
                         _this.$message({type: json.status, message: json.msg});
                         _this.content = '';
-                        // _this.$router.replace({path: '/user'});
+                       _this.refresh();
                     }
                     _this.loading = false;
                 }, resp => {
@@ -204,8 +204,9 @@
         },
         addCom(cid){
       var _this = this;
+      _this.$alert("asas");
             var aid=this.article.id;
-          //  _this.$alert(cid);
+            _this.$alert(cid);
       this.$prompt('请输入评论内容', '评论', {
           confirmButtonText: '确定',
           cancelButtonText: '取消'
@@ -534,7 +535,7 @@
         getRequest("/currentUserId").then(function (msg) {
             _this.UserId = msg.data;
         });
-        postRequest("/favorite/selected",{aid:aid,state:1}).then(resp=> {
+        postRequest("/favorite/selecteds",{aid:aid,state:1}).then(resp=> {
             //  _this.$alert(resp.data);
             if (resp.data === '') {
              _this.favorite="未收藏";
@@ -554,8 +555,7 @@
         activeName: '',
           comname:'',
           countlike:'',
-          countdislike:'',
-          favorite:''
+          countdislike:''
       }
     }
   }

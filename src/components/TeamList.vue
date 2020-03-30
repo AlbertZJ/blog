@@ -1,14 +1,14 @@
 <template>
   <div v-loading="loading">
-    <div style="margin-top: 10px;display: flex;justify-content: center">
-      <el-input
-        placeholder="默认展示部分成员，可以通过用户名搜索用户..."
-        prefix-icon="el-icon-search"
-        v-model="keywords" style="width: 400px" size="small">
-      </el-input>
-      <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 3px" @click="searchClick">搜索
-      </el-button>
-    </div>
+<!--    <div style="margin-top: 10px;display: flex;justify-content: center">-->
+<!--      <el-input-->
+<!--        placeholder="默认展示部分用户，可以通过用户名搜索用户..."-->
+<!--        prefix-icon="el-icon-search"-->
+<!--        v-model="keywords" style="width: 400px" size="small">-->
+<!--      </el-input>-->
+<!--      <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 3px" @click="search">搜索-->
+<!--      </el-button>-->
+<!--    </div>-->
     <div style="display: flex;justify-content: space-around;flex-wrap: wrap">
       <el-card style="width:330px;margin-top: 10px;" v-for="(user,index) in users" :key="index"
                v-loading="cardloading[index]">
@@ -62,10 +62,15 @@
              _this.$router.replace({path: '/teamTable', query: {uid: uid}});
             // this.$router.push({path: '/teamTable', query: {uid: row}})
             },
+            search(){
+               // this.$alert("sadf");
 
+                this.loadUserList();
+            },
             loadUserList(){
                 var _this = this;
-                getRequest("/admin/user/all?nickname="+this.keywords).then(resp=> {
+               // _this.$alert(this.keywords);
+                getRequest("/user/all?nickname="+this.keywords).then(resp=> {
                     _this.loading = false;
                     if (resp.status == 200) {
                        //  _this.$alert(resp.data);
@@ -80,10 +85,6 @@
                         _this.$message({type: 'error', message: data});
                     }
                 });
-            },
-            searchClick(){
-                this.loading = true;
-                this.loadUserList();
             }
         },
         data(){
