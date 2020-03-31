@@ -38,20 +38,18 @@
             var from = this.$route.query.from;
             this.from = from;
             var _this = this;
-            // _this.$alert(this.from);
             if (from != null && from != '' && from != undefined) {
                 var id = this.$route.query.id;
                 this.id = id;
                 this.loading = true;
-              //  _this.$alert(this.id);
-                getRequest("/comment/" + id).then(resp=> {
+                getRequest("/comment/" + id).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.comment = resp.data;
                     } else {
                         _this.$message({type: 'error', message: '页面加载失败!'})
                     }
-                }, resp=> {
+                }, resp => {
                     // 后台返回数据出错时输出
                     _this.loading = false;
                     _this.$message({type: 'error', message: '页面加载失败!'})
@@ -62,10 +60,10 @@
             mavonEditor
         },
         methods: {
-            cancelEdit(){
+            cancelEdit() {
                 this.$router.go(-1)
             },
-            saveBlog(state){
+            saveBlog(state) {
                 if (!(isNotNullORBlank(this.comment.content,))) {
                     this.$message({type: 'error', message: '数据不能为空!'});
                     return;
@@ -76,7 +74,7 @@
                     id: _this.comment.id,
                     content: _this.comment.content,
                     state: state,
-                }).then(resp=> {
+                }).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200 && resp.data.status == 'success') {
                         _this.comment.id = resp.data.msg;
@@ -88,12 +86,11 @@
                             _this.$router.replace({path: '/commentList'});
                         }
                     }
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     _this.$message({type: 'error', content: state == 0 ? '保存草稿失败!' : '文章发布失败!'});
                 })
             },
-
             handleClose(tag) {
                 // this.article.dynamicTags.splice(this.article.dynamicTags.indexOf(tag), 1);
             },

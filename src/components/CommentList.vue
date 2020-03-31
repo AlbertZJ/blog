@@ -3,16 +3,19 @@
     <el-main class="main">
       <el-tabs v-model="commentName" @tab-click="handleClick" type="card">
         <el-tab-pane label="所有评论" name="all">
-          <comment_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false" :commentName="commentName"></comment_table>
+          <comment_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false"
+                         :commentName="commentName"></comment_table>
         </el-tab-pane>
         <el-tab-pane label="已发表" name="post">
-          <comment_table state="1" :showEdit="true" :showDelete="true" :showRestore="false" :commentName="commentName"></comment_table>
+          <comment_table state="1" :showEdit="true" :showDelete="true" :showRestore="false"
+                         :commentName="commentName"></comment_table>
         </el-tab-pane>
-<!--        <el-tab-pane label="回收站" name="dustbin">-->
-<!--          <comment_table state="2" :showEdit="false" :showDelete="true" :showRestore="true" :commentName="commentName"></comment_table>-->
-<!--        </el-tab-pane>-->
+        <!--        <el-tab-pane label="回收站" name="dustbin">-->
+        <!--          <comment_table state="2" :showEdit="false" :showDelete="true" :showRestore="true" :commentName="commentName"></comment_table>-->
+        <!--        </el-tab-pane>-->
         <el-tab-pane label="评论管理" name="commentmana" v-if="isAdmin">
-          <comment_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false" :commentName="commentName"></comment_table>
+          <comment_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false"
+                         :commentName="commentName"></comment_table>
         </el-tab-pane>
       </el-tabs>
     </el-main>
@@ -29,9 +32,8 @@
     export default {
         mounted: function () {
             var _this = this;
-            getRequest("/isComment").then(resp=> {
+            getRequest("/isComment").then(resp => {
                 if (resp.status == 200) {
-                   // _this.$alert(resp.data+"comment");
                     _this.isAdmin = resp.data;
                 }
             })

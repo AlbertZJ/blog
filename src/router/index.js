@@ -40,7 +40,7 @@ export default new Router({
       name: '注册',
       hidden: true,
       component: Register
-    },{
+    }, {
       path: '/home',
       name: '',
       component: Home,
@@ -149,16 +149,16 @@ export default new Router({
       ]
     },
     // 主页用户管理分栏
-     {
+    {
       path: '/home',
       component: Home,
-       iconCls:'fa fa-user-o',
+      iconCls: 'fa fa-user-o',
       name: '社区成员',
       children: [
         {
           path: '/teamList',
           name: '社区成员',
-          iconCls:'fa fa-user-o',
+          iconCls: 'fa fa-user-o',
           component: TeamList,
           meta: {
             keepAlive: true
@@ -167,7 +167,7 @@ export default new Router({
           path: '/teamTable',
           name: '空间',
           component: TeamTable,
-           hidden: true,
+          hidden: true,
           meta: {
             keepAlive: false
           }
@@ -178,27 +178,27 @@ export default new Router({
 
     // 主页用户管理分栏
     {
-          path: '/home',
-          component: Home,
+      path: '/home',
+      component: Home,
+      name: '用户管理',
+      iconCls: 'fa fa-user-o',
+      children: [
+        {
+          path: '/user',
+          //  iconCls: 'fa fa-user-o',
           name: '用户管理',
-          iconCls:'fa fa-user-o',
-          children: [
-            {
-              path: '/user',
-              //  iconCls: 'fa fa-user-o',
-              name: '用户管理',
-              component: UserMana,
-              meta: {
-                keepAlive: true
-              }
-            }, {
-              path: '/regist',
-              name: '信息管理',
-              component: Register,
-              meta: {
-                keepAlive: true
-              }
-            }
+          component: UserMana,
+          meta: {
+            keepAlive: true
+          }
+        }, {
+          path: '/regist',
+          name: '信息管理',
+          component: Register,
+          meta: {
+            keepAlive: true
+          }
+        }
       ]
     }
     , {
@@ -214,7 +214,7 @@ export default new Router({
         }
       ]
     },
-     {
+    {
       path: '/home',
       component: Home,
       name: '角色管理',
@@ -240,19 +240,6 @@ export default new Router({
         }
       ]
     },
-    // {
-    //   path: '/home',
-    //   component: Home,
-    //   name: '收藏夹s',
-    //   children: [
-    //     {
-    //       path: '/favoritelist',
-    //       iconCls: 'fa fa-reorder',
-    //       name: '收藏夹s',
-    //       component: FavoriteList
-    //     }
-    //   ]
-    // },
     {
       path: '/home',
       component: Home,
@@ -267,7 +254,7 @@ export default new Router({
         }
       ]
     },
-   {
+    {
       path: '/login',
       name: 'Login',
       hidden: true,

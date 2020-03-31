@@ -1,7 +1,8 @@
-<template >
-  <el-container v-loading="loading" class="post-article" >
-    <el-header class="header"  >
-      <el-input v-model="notice.title" placeholder="请输入标题..." style="width: 400px;margin-left: 10px" v-if="isAdmin"></el-input>
+<template>
+  <el-container v-loading="loading" class="post-article">
+    <el-header class="header">
+      <el-input v-model="notice.title" placeholder="请输入标题..." style="width: 400px;margin-left: 10px"
+                v-if="isAdmin"></el-input>
     </el-header>
     <el-main class="main" v-if="isAdmin">
       <div id="editor">
@@ -11,13 +12,13 @@
       <div style="display: flex;align-items: center;margin-top: 15px;justify-content: flex-end">
         <el-button @click="cancelEdit" v-if="from!=undefined">放弃修改</el-button>
         <template v-if="from==undefined || from=='draft'">
-          <el-button @click="saveBlog(0)" >保存到草稿箱</el-button>
-          <el-button type="primary" @click="saveBlog(1)" >发布通知</el-button>
-          <el-button type="primary" @click="saveNotice(1)" >设为系统消息</el-button>
+          <el-button @click="saveBlog(0)">保存到草稿箱</el-button>
+          <el-button type="primary" @click="saveBlog(1)">发布通知</el-button>
+          <el-button type="primary" @click="saveNotice(1)">设为系统消息</el-button>
         </template>
-        <template v-else="from==post" >
-          <el-button type="primary" @click="saveBlog(1)" >保存修改</el-button>
-          <el-button type="primary" @click="saveNotice(1)" >设为系统消息</el-button>
+        <template v-else="from==post">
+          <el-button type="primary" @click="saveBlog(1)">保存修改</el-button>
+          <el-button type="primary" @click="saveNotice(1)">设为系统消息</el-button>
         </template>
       </div>
     </el-main>
@@ -44,24 +45,21 @@
                 var id = this.$route.query.id;
                 this.id = id;
                 this.loading = true;
-              //  _this.$alert(this.id);
                 var _this = this;
-                getRequest("/isNotice").then(resp=> {
+                getRequest("/isNotice").then(resp => {
                     if (resp.status == 200) {
-                        //   _this.$alert(resp.data+"notice");
                         _this.isAdmin = resp.data;
                     }
                 });
-                getRequest("/notice/" + id).then(resp=> {
+                getRequest("/notice/" + id).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.notice = resp.data;
-                      //  _this.$alert(resp.data);
                     } else {
                         _this.$message({type: 'error', message: '页面加载失败!'})
                     }
-                }, resp=> {
-                 // 后台返回数据出错时输出
+                }, resp => {
+                    // 后台返回数据出错时输出
                     _this.loading = false;
                     _this.$message({type: 'error', message: '页面加载失败!'})
                 });
@@ -72,10 +70,10 @@
             mavonEditor
         },
         methods: {
-            cancelEdit(){
+            cancelEdit() {
                 this.$router.go(-1)
             },
-            saveBlog(state){
+            saveBlog(state) {
                 if (!(isNotNullORBlank(this.notice.title, this.notice.mdContent))) {
                     this.$message({type: 'error', message: '数据不能为空!'});
                     return;
@@ -88,8 +86,8 @@
                     mdContent: _this.notice.mdContent,
                     htmlContent: _this.$refs.md.d_render,
                     state: state,
-                    news:"否"
-                }).then(resp=> {
+                    news: "否"
+                }).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200 && resp.data.status == 'success') {
                         _this.notice.id = resp.data.msg;
@@ -99,12 +97,12 @@
                             _this.$router.replace({path: '/noticeList'});
                         }
                     }
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     _this.$message({type: 'error', message: state == 0 ? '保存草稿失败!' : '通知发布失败!'});
                 })
             },
-            saveNotice(state){
+            saveNotice(state) {
                 if (!(isNotNullORBlank(this.notice.title, this.notice.mdContent))) {
                     this.$message({type: 'error', message: '数据不能为空!'});
                     return;
@@ -117,8 +115,8 @@
                     mdContent: _this.notice.mdContent,
                     htmlContent: _this.$refs.md.d_render,
                     state: state,
-                    news:"是"
-                }).then(resp=> {
+                    news: "是"
+                }).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200 && resp.data.status == 'success') {
                         _this.notice.id = resp.data.msg;
@@ -128,14 +126,14 @@
                             _this.$router.replace({path: '/noticeList'});
                         }
                     }
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     _this.$message({type: 'error', message: state == 0 ? '保存草稿失败!' : '通知发布失败!'});
                 })
             },
 
             handleClose(tag) {
-               // this.article.dynamicTags.splice(this.article.dynamicTags.indexOf(tag), 1);
+                // this.article.dynamicTags.splice(this.article.dynamicTags.indexOf(tag), 1);
             },
             showInput() {
 
@@ -150,11 +148,11 @@
                 from: '',
                 notice: {
                     id: '-1',
-                  //  dynamicTags: [],
+                    //  dynamicTags: [],
                     message: '',
                     title: '',
                     mdContent: ''
-                 //   cid: ''
+                    //   cid: ''
                 }
             }
         }

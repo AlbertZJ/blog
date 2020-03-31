@@ -51,44 +51,44 @@
   </el-row>
 </template>
 <script>
-  export default{
-    methods: {
-      handleCommand(command){
-        var _this = this;
-        if (command == 'logout') {
-          this.$confirm('注销登录吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(function () {
-            _this.$http.get("/logout");
-            _this.currentUserName = '游客';
-            _this.$router.replace({path: '/'});
-          }, function () {
-            //取消
-          })
+    export default {
+        methods: {
+            handleCommand(command) {
+                var _this = this;
+                if (command == 'logout') {
+                    this.$confirm('注销登录吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function () {
+                        _this.$http.get("/logout");
+                        _this.currentUserName = '游客';
+                        _this.$router.replace({path: '/'});
+                    }, function () {
+                        //取消
+                    })
+                }
+                if (command === 'sysMsg') {
+                    this.$alert('欢迎来到微社区管理平台，请遵守相关约定！', '友情提示', {
+                        confirmButtonText: '确定',
+                        callback: action => {
+                        }
+                    });
+                }
+            },
+            mounted: function () {
+                this.$http.get("/currentUserName").then(function (msg) {
+                    this.currentUserName = msg.bodyText;
+                }, function (msg) {
+                    this.currentUserName = '游客';
+                });
+            },
+            data() {
+                return {
+                    currentUserName: ''
+                }
+            }
         }
-          if (command==='sysMsg') {
-              this.$alert('欢迎来到微社区管理平台，请遵守相关约定！', '友情提示', {
-                  confirmButtonText: '确定',
-                  callback: action => {
-                  }
-              });
-      }
-    },
-    mounted: function () {
-      this.$http.get("/currentUserName").then(function (msg) {
-        this.currentUserName = msg.bodyText;
-      }, function (msg) {
-        this.currentUserName = '游客';
-      });
-    },
-    data(){
-      return {
-        currentUserName: ''
-      }
-    }
-  }
 </script>
 <style>
   .container {

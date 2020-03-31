@@ -10,11 +10,11 @@
 </style>
 <template>
   <div>
-<!--    <el-col :span="24">-->
-<!--      <div style="text-align: left;">-->
-<!--        <el-button type="text" icon="el-icon-back" @click="goBack" style="padding-bottom: 0px;">返回</el-button>-->
-<!--      </div>-->
-<!--    </el-col>-->
+    <!--    <el-col :span="24">-->
+    <!--      <div style="text-align: left;">-->
+    <!--        <el-button type="text" icon="el-icon-back" @click="goBack" style="padding-bottom: 0px;">返回</el-button>-->
+    <!--      </div>-->
+    <!--    </el-col>-->
     <div style="display: flex;justify-content: flex-start">
       <el-input
         placeholder="通过标题搜索该分类下的文章"
@@ -106,12 +106,11 @@
                 pageSize: 6,
                 keywords: '',
                 dustbinData: [],
-                cate:''
+                cate: ''
             }
         },
         mounted: function () {
             this.getCategories();
-
             var _this = this;
             this.loading = true;
             this.loadBlogs(1, this.pageSize);
@@ -121,7 +120,6 @@
             })
         },
         methods: {
-
             searchClick() {
                 this.loadBlogs(1, this.pageSize);
             },
@@ -139,44 +137,35 @@
                 }
                 this.deleteToDustBin(selItems[0].state)
             },
-
-            getCategories(){
+            getCategories() {
                 let _this = this;
-                getRequest("/admin/category/all").then(resp=> {
+                getRequest("/admin/category/all").then(resp => {
                     _this.categories = resp.data;
                 });
             },
-
             //翻页
             currentChange(currentPage) {
                 this.currentPage = currentPage;
                 this.loading = true;
-                if(this.keywords==""&&this.cate!=""){
+                if (this.keywords == "" && this.cate != "") {
                     this.loadBloged(currentPage, this.pageSize);
-                }else{
+                } else {
                     this.loadBlogs(currentPage, this.pageSize);
                 }
             },
             loadBloged(page, count) {
                 var _this = this;
                 var url = '';
-                // _this.$alert(this.state);
                 if (this.state == -2) {
                     url = "/admin/article/cate" + "?page=" + page + "&count=" + count + "&cate=" + this.cate;
-                    //  _this.$alert(url);
                 } else {
-                    //   _this.$alert("sff");
                     url = "/article/cate?state=" + this.state + "&page=" + page + "&count=" + count + "&cate=" + this.cate;
                 }
-                // _this.$alert(url);
                 getRequest(url).then(resp => {
-                    //     _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
                         _this.totalCount = resp.data.totalCount;
-
-                        // _this.$alert(_this.totalCount);
                     } else {
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
@@ -197,11 +186,9 @@
                 var _this = this;
                 var url = '';
                 var aid = this.$route.query.aid;
-                // _this.$alert(this.state);
                 var uid = this.$route.query.uid;
-                    url = "/article/alls?state=" +1+ "&page=" + page + "&count=" + count + "&uid=" + uid+ "&keywords=" + this.keywords;
+                url = "/article/alls?state=" + 1 + "&page=" + page + "&count=" + count + "&uid=" + uid + "&keywords=" + this.keywords;
                 getRequest(url).then(resp => {
-                    //  _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
@@ -227,7 +214,6 @@
             },
             handleEdit(index, row) {
                 let _this = this;
-                // _this.$alert(this.activeName);
                 this.$router.push({path: '/editBlog', query: {from: this.activeName, id: row.id}});
             },
             handleDelete(index, row) {
@@ -261,7 +247,7 @@
                     });
                 });
             },
-            goBack(){
+            goBack() {
                 this.$router.go(-1);
             },
             deleteToDustBin(state) {

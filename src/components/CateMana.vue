@@ -7,7 +7,6 @@
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增栏目</el-button>
     </el-header>
-
     <el-main class="cate_mana_main">
       <el-table
         ref="multipleTable"
@@ -55,158 +54,157 @@
   </el-container>
 </template>
 <script>
-  import {postRequest} from '../utils/api'
-  import {putRequest} from '../utils/api'
-  import {deleteRequest} from '../utils/api'
-  import {getRequest} from '../utils/api'
-  export default{
-    methods: {
-      addNewCate(){
-        this.loading = true;
-        var _this = this;
-        postRequest('/admin/category/regist', {cateName: this.cateName}).then(resp=> {
-           // _this.$alert(resp.status);
-          if (resp.status == 200) {
-            var json = resp.data;
-            _this.$message({type: json.status, message: json.msg});
-            _this.cateName = '';
-            _this.refresh();
-          }
-          _this.loading = false;
-        }, resp=> {
-          if (resp.response.status == 403) {
-            _this.$message({
-              type: 'error',
-              message: resp.response.data
-            });
-          }
-          _this.loading = false;
-        });
-      },
-      deleteAll(){
-        var _this = this;
-        this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
-          type: 'warning',
-          confirmButtonText: '确定',
-          cancelButtonText: '取消'
-        }).then(()=> {
-          var selItems = _this.selItems;
-          var ids = '';
-          for (var i = 0; i < selItems.length; i++) {
-            ids += selItems[i].id + ",";
-          }
-          _this.deleteCate(ids.substring(0, ids.length - 1));
-        }).catch(() => {
-          //取消
-          _this.loading = false;
-        });
-      },
-      handleSelectionChange(val) {
-        this.selItems = val;
-      },
-      handleEdit(index, row){
-        var _this = this;
-        this.$prompt('请输入新名称', '编辑', {
-          confirmButtonText: '更新',
-          inputValue: row.cateName,
-          cancelButtonText: '取消'
-        }).then(({value}) => {
-          //value就是输入值
-          if (value == null || value.length == 0) {
-            _this.$message({
-              type: 'info',
-              message: '数据不能为空!'
-            });
-          } else {
-            _this.loading = true;
-            putRequest("/admin/category/", {id: row.id, cateName: value}).then(resp=> {
-              var json = resp.data;
-              _this.$message({
-                type: json.status,
-                message: json.msg
-              });
-              _this.refresh();
-            }, resp=> {
-              if (resp.response.status == 403) {
-                _this.$message({
-                  type: 'error',
-                  message: resp.response.data
+    import {postRequest} from '../utils/api'
+    import {putRequest} from '../utils/api'
+    import {deleteRequest} from '../utils/api'
+    import {getRequest} from '../utils/api'
+
+    export default {
+        methods: {
+            addNewCate() {
+                this.loading = true;
+                var _this = this;
+                postRequest('/admin/category/regist', {cateName: this.cateName}).then(resp => {
+                    if (resp.status == 200) {
+                        var json = resp.data;
+                        _this.$message({type: json.status, message: json.msg});
+                        _this.cateName = '';
+                        _this.refresh();
+                    }
+                    _this.loading = false;
+                }, resp => {
+                    if (resp.response.status == 403) {
+                        _this.$message({
+                            type: 'error',
+                            message: resp.response.data
+                        });
+                    }
+                    _this.loading = false;
                 });
-              }
-              _this.loading = false;
-            });
-          }
-        });
-      },
-      handleDelete(index, row){
-        let _this = this;
-        this.$confirm('确认删除 ' + row.cateName + ' ?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          _this.deleteCate(row.id);
-        }).catch(() => {
-          //取消
-          _this.loading = false;
-        });
-      },
-      deleteCate(ids){
-        var _this = this;
-        this.loading = true;
-        //删除
-        deleteRequest("/admin/category/" + ids).then(resp=> {
-          var json = resp.data;
-          _this.$message({
-            type: json.status,
-            message: json.msg
-          });
-          _this.refresh();
-        }, resp=> {
-          _this.loading = false;
-          if (resp.response.status == 403) {
-            _this.$message({
-              type: 'error',
-              message: resp.response.data
-            });
-          } else if (resp.response.status == 500) {
-            _this.$message({
-              type: 'error',
-              message: '该栏目下尚有文章，删除失败!'
-            });
-          }
-        })
-      },
-      refresh(){
-        let _this = this;
-        getRequest("/admin/category/all").then(resp=> {
-          _this.categories = resp.data;
-          //  _this.$alert(resp.data);
-          _this.loading = false;
-        }, resp=> {
-          if (resp.response.status == 403) {
-            _this.$message({
-              type: 'error',
-              message: resp.response.data
-            });
-          }
-          _this.loading = false;
-        });
-      }
-    },
-    mounted: function () {
-      this.loading = true;
-      this.refresh();
-    },
-    data(){
-      return {
-        cateName: '',
-        selItems: [],
-        categories: [],
-        loading: false
-      }
+            },
+            deleteAll() {
+                var _this = this;
+                this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
+                    type: 'warning',
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消'
+                }).then(() => {
+                    var selItems = _this.selItems;
+                    var ids = '';
+                    for (var i = 0; i < selItems.length; i++) {
+                        ids += selItems[i].id + ",";
+                    }
+                    _this.deleteCate(ids.substring(0, ids.length - 1));
+                }).catch(() => {
+                    //取消
+                    _this.loading = false;
+                });
+            },
+            handleSelectionChange(val) {
+                this.selItems = val;
+            },
+            handleEdit(index, row) {
+                var _this = this;
+                this.$prompt('请输入新名称', '编辑', {
+                    confirmButtonText: '更新',
+                    inputValue: row.cateName,
+                    cancelButtonText: '取消'
+                }).then(({value}) => {
+                    //value就是输入值
+                    if (value == null || value.length == 0) {
+                        _this.$message({
+                            type: 'info',
+                            message: '数据不能为空!'
+                        });
+                    } else {
+                        _this.loading = true;
+                        putRequest("/admin/category/", {id: row.id, cateName: value}).then(resp => {
+                            var json = resp.data;
+                            _this.$message({
+                                type: json.status,
+                                message: json.msg
+                            });
+                            _this.refresh();
+                        }, resp => {
+                            if (resp.response.status == 403) {
+                                _this.$message({
+                                    type: 'error',
+                                    message: resp.response.data
+                                });
+                            }
+                            _this.loading = false;
+                        });
+                    }
+                });
+            },
+            handleDelete(index, row) {
+                let _this = this;
+                this.$confirm('确认删除 ' + row.cateName + ' ?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    _this.deleteCate(row.id);
+                }).catch(() => {
+                    //取消
+                    _this.loading = false;
+                });
+            },
+            deleteCate(ids) {
+                var _this = this;
+                this.loading = true;
+                //删除
+                deleteRequest("/admin/category/" + ids).then(resp => {
+                    var json = resp.data;
+                    _this.$message({
+                        type: json.status,
+                        message: json.msg
+                    });
+                    _this.refresh();
+                }, resp => {
+                    _this.loading = false;
+                    if (resp.response.status == 403) {
+                        _this.$message({
+                            type: 'error',
+                            message: resp.response.data
+                        });
+                    } else if (resp.response.status == 500) {
+                        _this.$message({
+                            type: 'error',
+                            message: '该栏目下尚有文章，删除失败!'
+                        });
+                    }
+                })
+            },
+            refresh() {
+                let _this = this;
+                getRequest("/admin/category/all").then(resp => {
+                    _this.categories = resp.data;
+                    _this.loading = false;
+                }, resp => {
+                    if (resp.response.status == 403) {
+                        _this.$message({
+                            type: 'error',
+                            message: resp.response.data
+                        });
+                    }
+                    _this.loading = false;
+                });
+            }
+        },
+        mounted: function () {
+            this.loading = true;
+            this.refresh();
+        },
+        data() {
+            return {
+                cateName: '',
+                selItems: [],
+                categories: [],
+                loading: false
+            }
+        }
     }
-  }
 </script>
 <style>
   .cate_mana_header {

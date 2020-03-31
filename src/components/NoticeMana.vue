@@ -7,8 +7,6 @@
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="add">新增公告</el-button>
     </el-header>
-
-
     <el-main class="cate_mana_main">
       <el-table
         ref="multipleTable"
@@ -30,7 +28,6 @@
           prop="message"
           width="120" align="left">
         </el-table-column>
-
         <el-table-column
           label="最近编辑时间" width="140" align="left">
           <template slot-scope="scope">{{ scope.row.publishDate | formatDateTime}}</template>
@@ -40,7 +37,6 @@
           prop="nickname"
           width="120" align="left">
         </el-table-column>
-
         <el-table-column
           label="删除时间" width="140" align="left">
           <template slot-scope="scope">{{ scope.row.deleteTime | formatDateTime}}</template>
@@ -61,8 +57,7 @@
               type="danger"
               @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
-
-<!--            <el-button  size="medium" style="margin-left: 10px" @click="addCom(comment.id)" v-if="comment.parentId==-1">评论</el-button>-->
+            <!--            <el-button  size="medium" style="margin-left: 10px" @click="addCom(comment.id)" v-if="comment.parentId==-1">评论</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -77,43 +72,41 @@
     import {putRequest} from '../utils/api'
     import {deleteRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
-    export default{
+
+    export default {
         methods: {
-            add(){
+            add() {
                 this.loading = true;
                 var _this = this;
-              //  _this.$alert(this.messages);
-                var id=7;
+                var id = 7;
                 getRequest("/currentUserId").then(function (msg) {
-                    id=msg.data;
+                    id = msg.data;
                 });
-                  // _this.$alert(id);
-                    postRequest('/admin/notice/add', {message: this.message, uid: id}).then(resp => {
-                      //  _this.$alert(resp.status + "saihf");
-                        if (resp.status == 200) {
-                            var json = resp.data;
-                            _this.$message({type: json.status, message: json.msg});
-                            _this.message = '';
-                            _this.refresh();
-                        }
-                        _this.loading = false;
-                    }, resp => {
-                        if (resp.response.status == 403) {
-                            _this.$message({
-                                type: 'error',
-                                message: resp.response.data
-                            });
-                        }
-                        _this.loading = false;
-                    });
+                postRequest('/admin/notice/add', {message: this.message, uid: id}).then(resp => {
+                    if (resp.status == 200) {
+                        var json = resp.data;
+                        _this.$message({type: json.status, message: json.msg});
+                        _this.message = '';
+                        _this.refresh();
+                    }
+                    _this.loading = false;
+                }, resp => {
+                    if (resp.response.status == 403) {
+                        _this.$message({
+                            type: 'error',
+                            message: resp.response.data
+                        });
+                    }
+                    _this.loading = false;
+                });
             },
-            deleteAll(){
+            deleteAll() {
                 var _this = this;
                 this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
                     type: 'warning',
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then(()=> {
+                }).then(() => {
                     var selItems = _this.selItems;
                     var ids = '';
                     for (var i = 0; i < selItems.length; i++) {
@@ -128,7 +121,7 @@
             handleSelectionChange(val) {
                 this.selItems = val;
             },
-            handleEdit(index, row){
+            handleEdit(index, row) {
                 var _this = this;
                 this.$prompt('请输入新名称', '编辑', {
                     confirmButtonText: '更新',
@@ -143,14 +136,14 @@
                         });
                     } else {
                         _this.loading = true;
-                        putRequest("/admin/notice/", {id: row.id, message: value}).then(resp=> {
+                        putRequest("/admin/notice/", {id: row.id, message: value}).then(resp => {
                             var json = resp.data;
                             _this.$message({
                                 type: json.status,
                                 message: json.msg
                             });
                             _this.refresh();
-                        }, resp=> {
+                        }, resp => {
                             if (resp.response.status == 403) {
                                 _this.$message({
                                     type: 'error',
@@ -162,7 +155,7 @@
                     }
                 });
             },
-            handleDelete(index, row){
+            handleDelete(index, row) {
                 let _this = this;
                 this.$confirm('确认删除 ' + row.message + ' ?', '提示', {
                     confirmButtonText: '确定',
@@ -175,20 +168,19 @@
                     _this.loading = false;
                 });
             },
-            deleteCate(ids){
+            deleteCate(ids) {
                 var _this = this;
                 this.loading = true;
                 _this.$alert(ids);
                 //删除
-                putRequest("/admin/notice/delete/" + ids).then(resp=> {
+                putRequest("/admin/notice/delete/" + ids).then(resp => {
                     var json = resp.data;
-                   // _this.$alert("json");
                     _this.$message({
                         type: json.status,
                         message: json.msg
                     });
                     _this.refresh();
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({
@@ -203,13 +195,12 @@
                     }
                 })
             },
-            refresh(){
+            refresh() {
                 let _this = this;
-                getRequest("/admin/notice/all").then(resp=> {
+                getRequest("/admin/notice/all").then(resp => {
                     _this.notice = resp.data;
-                   // _this.$alert(resp.data);
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -224,7 +215,7 @@
             this.loading = true;
             this.refresh();
         },
-        data(){
+        data() {
             return {
                 cateName: '',
                 selItems: [],

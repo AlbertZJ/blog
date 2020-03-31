@@ -3,26 +3,32 @@
     <el-main class="main">
       <el-tabs v-model="noticeName" @tab-click="handleClick" type="card">
         <el-tab-pane label="所有公告" name="all" v-if="isAdmin">
-          <notice_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false" :noticeName="noticeName"></notice_table>
+          <notice_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
         <el-tab-pane label="已发表" name="post" v-if="isAdmin">
-          <notice_table state="1" :showEdit="true" :showDelete="true" :showRestore="false" :noticeName="noticeName"></notice_table>
+          <notice_table state="1" :showEdit="true" :showDelete="true" :showRestore="false"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
         <el-tab-pane label="草稿箱" name="draft" v-if="isAdmin">
-          <notice_table state="0" :showEdit="true" :showDelete="true" :showRestore="false" :noticeName="noticeName"></notice_table>
+          <notice_table state="0" :showEdit="true" :showDelete="true" :showRestore="false"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin" v-if="isAdmin">
-          <notice_table state="2" :showEdit="false" :showDelete="true" :showRestore="true" :noticeName="noticeName"></notice_table>
+          <notice_table state="2" :showEdit="false" :showDelete="true" :showRestore="true"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
         <el-tab-pane label="公告管理" name="noticemana" v-if="isAdmin">
-          <notice_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false" :noticeName="noticeName"></notice_table>
+          <notice_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
-        <el-tab-pane label="公告历史" name="old" >
-          <notice_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false" :noticeName="noticeName"></notice_table>
+        <el-tab-pane label="公告历史" name="old">
+          <notice_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false"
+                        :noticeName="noticeName"></notice_table>
         </el-tab-pane>
-<!--        <el-tab-pane label="通知配置" name="blogcfg">-->
-<!--          <notice_cfg></notice_cfg>-->
-<!--        </el-tab-pane>-->
+        <!--        <el-tab-pane label="通知配置" name="blogcfg">-->
+        <!--          <notice_cfg></notice_cfg>-->
+        <!--        </el-tab-pane>-->
       </el-tabs>
     </el-main>
   </el-container>
@@ -34,12 +40,12 @@
     import {putRequest} from '../utils/api'
     import {deleteRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
+
     export default {
         mounted: function () {
             var _this = this;
-            getRequest("/isNotice").then(resp=> {
+            getRequest("/isNotice").then(resp => {
                 if (resp.status == 200) {
-                 //   _this.$alert(resp.data+"notice");
                     _this.isAdmin = resp.data;
                 }
             })

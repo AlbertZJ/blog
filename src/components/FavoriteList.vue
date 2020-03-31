@@ -1,12 +1,12 @@
 <template>
   <el-container>
-<!--    <el-header class="cate_mana_header">-->
-<!--      <el-input-->
-<!--        placeholder="请输入栏目名称"-->
-<!--        v-model="title" style="width: 200px;">-->
-<!--      </el-input>-->
-<!--      <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增栏目</el-button>-->
-<!--    </el-header>-->
+    <!--    <el-header class="cate_mana_header">-->
+    <!--      <el-input-->
+    <!--        placeholder="请输入栏目名称"-->
+    <!--        v-model="title" style="width: 200px;">-->
+    <!--      </el-input>-->
+    <!--      <el-button type="primary" size="medium" style="margin-left: 10px" @click="addNewCate">新增栏目</el-button>-->
+    <!--    </el-header>-->
 
     <el-main class="cate_mana_main">
       <el-table
@@ -59,13 +59,13 @@
     import {putRequest} from '../utils/api'
     import {deleteRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
-    export default{
+
+    export default {
         methods: {
-            addNewCate(){
+            addNewCate() {
                 this.loading = true;
                 var _this = this;
-                postRequest('/admin/category/regist', {title: this.title}).then(resp=> {
-                    // _this.$alert(resp.status);
+                postRequest('/admin/category/regist', {title: this.title}).then(resp => {
                     if (resp.status == 200) {
                         var json = resp.data;
                         _this.$message({type: json.status, message: json.msg});
@@ -73,7 +73,7 @@
                         _this.refresh();
                     }
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -83,13 +83,13 @@
                     _this.loading = false;
                 });
             },
-            deleteAll(){
+            deleteAll() {
                 var _this = this;
                 this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
                     type: 'warning',
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then(()=> {
+                }).then(() => {
                     var selItems = _this.selItems;
                     var ids = '';
                     for (var i = 0; i < selItems.length; i++) {
@@ -104,7 +104,7 @@
             handleSelectionChange(val) {
                 this.selItems = val;
             },
-            handleEdit(index, row){
+            handleEdit(index, row) {
                 var _this = this;
                 this.$prompt('请输入新名称', '编辑', {
                     confirmButtonText: '更新',
@@ -119,14 +119,14 @@
                         });
                     } else {
                         _this.loading = true;
-                        putRequest("/admin/category/", {id: row.id, title: value}).then(resp=> {
+                        putRequest("/admin/category/", {id: row.id, title: value}).then(resp => {
                             var json = resp.data;
                             _this.$message({
                                 type: json.status,
                                 message: json.msg
                             });
                             _this.refresh();
-                        }, resp=> {
+                        }, resp => {
                             if (resp.response.status == 403) {
                                 _this.$message({
                                     type: 'error',
@@ -138,7 +138,7 @@
                     }
                 });
             },
-            handleDelete(index, row){
+            handleDelete(index, row) {
                 let _this = this;
                 this.$confirm('确认删除 ' + row.title + ' ?', '提示', {
                     confirmButtonText: '确定',
@@ -151,18 +151,18 @@
                     _this.loading = false;
                 });
             },
-            deleteCate(ids){
+            deleteCate(ids) {
                 var _this = this;
                 this.loading = true;
                 //删除
-                deleteRequest("/admin/category/" + ids).then(resp=> {
+                deleteRequest("/admin/category/" + ids).then(resp => {
                     var json = resp.data;
                     _this.$message({
                         type: json.status,
                         message: json.msg
                     });
                     _this.refresh();
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({
@@ -177,13 +177,12 @@
                     }
                 })
             },
-            refresh(){
+            refresh() {
                 let _this = this;
-                getRequest("/admin/category/all").then(resp=> {
+                getRequest("/admin/category/all").then(resp => {
                     _this.favorite = resp.data;
-                    //  _this.$alert(resp.data);
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -198,7 +197,7 @@
             this.loading = true;
             this.refresh();
         },
-        data(){
+        data() {
             return {
                 title: '',
                 selItems: [],

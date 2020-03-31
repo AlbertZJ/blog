@@ -1,13 +1,12 @@
 <template>
   <el-container>
-    <el-header class="cate_mana_header"  >
+    <el-header class="cate_mana_header">
       <el-input
         placeholder="请输入角色名称"
         v-model="name" style="width: 200px;" v-if="isAdmin">
       </el-input>
       <el-button type="primary" size="medium" style="margin-left: 10px" @click="addRole" v-if="isAdmin">新增角色</el-button>
     </el-header>
-
     <el-main class="cate_mana_main">
       <el-table
         ref="multipleTable"
@@ -17,17 +16,17 @@
         @selection-change="handleSelectionChange" v-loading="loading">
         <el-table-column
           type="selection"
-          width="55" align="left" >
+          width="55" align="left">
         </el-table-column>
         <el-table-column
           label="编号"
           prop="id"
-          width="120" align="left" >
+          width="120" align="left">
         </el-table-column>
         <el-table-column
           label="角色名称"
           prop="name"
-          width="120" align="left" >
+          width="120" align="left">
         </el-table-column>
         <el-table-column
           prop="date"
@@ -35,21 +34,21 @@
           <template slot-scope="scope">{{ scope.row.date | formatDate}}</template>
         </el-table-column>
         <el-table-column label="操作" align="left" v-if="isAdmin">
-          <template slot-scope="scope" >
+          <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleEdit(scope.$index, scope.row)" >编辑
+              @click="handleEdit(scope.$index, scope.row)">编辑
             </el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)" >删除
+              @click="handleDelete(scope.$index, scope.row)">删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
       <el-button type="danger" :disabled="this.selItems.length==0" style="margin-top: 10px;width: 100px;"
-                 @click="deleteAll" v-if="this.role.length>0&&isAdmin" >批量删除
+                 @click="deleteAll" v-if="this.role.length>0&&isAdmin">批量删除
       </el-button>
     </el-main>
   </el-container>
@@ -59,13 +58,13 @@
     import {putRequest} from '../utils/api'
     import {deleteRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
-    export default{
+
+    export default {
         methods: {
-            addRole(){
+            addRole() {
                 this.loading = true;
                 var _this = this;
-                postRequest('/admin/role/addRole', {name: this.name}).then(resp=> {
-                 //   _this.$alert(resp.status);
+                postRequest('/admin/role/addRole', {name: this.name}).then(resp => {
                     if (resp.status == 200) {
                         var json = resp.data;
                         _this.$message({type: json.status, message: json.msg});
@@ -73,7 +72,7 @@
                         _this.refresh();
                     }
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -83,13 +82,13 @@
                     _this.loading = false;
                 });
             },
-            deleteAll(){
+            deleteAll() {
                 var _this = this;
                 this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
                     type: 'warning',
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then(()=> {
+                }).then(() => {
                     var selItems = _this.selItems;
                     var ids = '';
                     for (var i = 0; i < selItems.length; i++) {
@@ -104,7 +103,7 @@
             handleSelectionChange(val) {
                 this.selItems = val;
             },
-            handleEdit(index, row){
+            handleEdit(index, row) {
                 var _this = this;
                 this.$prompt('请输入新名称', '编辑', {
                     confirmButtonText: '更新',
@@ -119,14 +118,14 @@
                         });
                     } else {
                         _this.loading = true;
-                        putRequest("/admin/role/update", {id: row.id, name: value}).then(resp=> {
+                        putRequest("/admin/role/update", {id: row.id, name: value}).then(resp => {
                             var json = resp.data;
                             _this.$message({
                                 type: json.status,
                                 message: json.msg
                             });
                             _this.refresh();
-                        }, resp=> {
+                        }, resp => {
                             if (resp.response.status == 403) {
                                 _this.$message({
                                     type: 'error',
@@ -138,7 +137,7 @@
                     }
                 });
             },
-            handleDelete(index, row){
+            handleDelete(index, row) {
                 let _this = this;
                 this.$confirm('确认删除 ' + row.name + ' ?', '提示', {
                     confirmButtonText: '确定',
@@ -151,18 +150,18 @@
                     _this.loading = false;
                 });
             },
-            deleteRole(ids){
+            deleteRole(ids) {
                 var _this = this;
                 this.loading = true;
                 //删除
-                deleteRequest("/admin/role/delete" + ids).then(resp=> {
+                deleteRequest("/admin/role/delete" + ids).then(resp => {
                     var json = resp.data;
                     _this.$message({
                         type: json.status,
                         message: json.msg
                     });
                     _this.refresh();
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({
@@ -177,12 +176,12 @@
                     }
                 })
             },
-            refresh(){
+            refresh() {
                 let _this = this;
-                getRequest("/admin/role/all").then(resp=> {
+                getRequest("/admin/role/all").then(resp => {
                     _this.role = resp.data;
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -196,16 +195,15 @@
         },
         mounted: function () {
             var _this = this;
-            getRequest("/isAdmin").then(resp=> {
+            getRequest("/isAdmin").then(resp => {
                 if (resp.status == 200) {
-                   // _this.$alert(resp.data+"notice");
                     _this.isAdmin = resp.data;
                 }
             });
             this.loading = true;
             this.refresh();
         },
-        data(){
+        data() {
             return {
                 name: '',
                 selItems: [],

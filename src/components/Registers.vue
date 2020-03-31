@@ -9,9 +9,10 @@
     <el-form-item prop="checkPass">
       <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
     </el-form-item>
-
     <el-form-item style="width: 100%">
-      <el-button type="primary" @click.native.prevent="submitClick" style="width: 40%;background: #505458;border: none">注册</el-button>
+      <el-button type="primary" @click.native.prevent="submitClick" style="width: 40%;background: #505458;border: none">
+        注册
+      </el-button>
     </el-form-item>
   </el-form>
   </body>
@@ -42,7 +43,6 @@
                     username: this.loginForm.username,
                     password: this.loginForm.password,
                 }).then(resp => {
-
                     if (resp.status == 200) {
                         //成功
                         var json = resp.data;
@@ -61,8 +61,6 @@
                     _this.$alert('找不到服务!', '注册失败!');
                 });
             }
-
-
         }
     }
 </script>
@@ -74,9 +72,11 @@
     background-size: cover;
     position: fixed;
   }
-  body{
+
+  body {
     margin: -5px 0px;
   }
+
   .login-container {
     border-radius: 15px;
     background-clip: padding-box;
@@ -87,15 +87,18 @@
     border: 1px solid #eaeaea;
     box-shadow: 0 0 25px #cac6c6;
   }
+
   .login_title {
     margin: 0px auto 40px auto;
     text-align: center;
     color: #505458;
   }
+
   .login_remember {
     margin: 0px 0px 35px 0px;
     text-align: left;
   }
+
   /*.login_button {*/
   /*background: #505458;*/
   /*}*/

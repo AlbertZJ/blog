@@ -11,15 +11,15 @@
 <template>
   <div>
     <div style="display: flex;justify-content: flex-start">
-    <el-select  v-model="cate"  placeholder="通过栏目搜索该分类下的文章"
-                prefix-icon="el-icon-search" style="width: 300px;" size="mini">
-      <el-option
-        v-for="item in categories"
-        :key="item.id"
-        :label="item.cateName"
-        :value="item.cateName">
-      </el-option>
-    </el-select>
+      <el-select v-model="cate" placeholder="通过栏目搜索该分类下的文章"
+                 prefix-icon="el-icon-search" style="width: 300px;" size="mini">
+        <el-option
+          v-for="item in categories"
+          :key="item.id"
+          :label="item.cateName"
+          :value="item.cateName">
+        </el-option>
+      </el-select>
       <el-button type="primary" icon="el-icon-search" size="mini" style="margin-left: 3px" @click="looked">查看
       </el-button>
     </div>
@@ -115,12 +115,11 @@
                 pageSize: 6,
                 keywords: '',
                 dustbinData: [],
-                cate:''
+                cate: ''
             }
         },
         mounted: function () {
             this.getCategories();
-
             var _this = this;
             this.loading = true;
             this.loadBlogs(1, this.pageSize);
@@ -130,12 +129,10 @@
             })
         },
         methods: {
-
             searchClick() {
                 this.loadBlogs(1, this.pageSize);
             },
             looked() {
-               // this.$alert(this.cate);
                 this.loadBloged(1, this.pageSize);
             },
             itemClick(row) {
@@ -148,44 +145,35 @@
                 }
                 this.deleteToDustBin(selItems[0].state)
             },
-
-            getCategories(){
+            getCategories() {
                 let _this = this;
-                getRequest("/admin/category/all").then(resp=> {
+                getRequest("/admin/category/all").then(resp => {
                     _this.categories = resp.data;
                 });
             },
-
             //翻页
             currentChange(currentPage) {
                 this.currentPage = currentPage;
                 this.loading = true;
-                if(this.keywords==""&&this.cate!=""){
+                if (this.keywords == "" && this.cate != "") {
                     this.loadBloged(currentPage, this.pageSize);
-                }else{
+                } else {
                     this.loadBlogs(currentPage, this.pageSize);
                 }
             },
             loadBloged(page, count) {
                 var _this = this;
                 var url = '';
-                 // _this.$alert(this.state);
                 if (this.state == -2) {
                     url = "/admin/article/cate" + "?page=" + page + "&count=" + count + "&cate=" + this.cate;
-                    //  _this.$alert(url);
                 } else {
-                   //   _this.$alert("sff");
                     url = "/article/cate?state=" + this.state + "&page=" + page + "&count=" + count + "&cate=" + this.cate;
                 }
-               // _this.$alert(url);
                 getRequest(url).then(resp => {
-                 //     _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
                         _this.totalCount = resp.data.totalCount;
-
-                       // _this.$alert(_this.totalCount);
                     } else {
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
@@ -205,16 +193,12 @@
             loadBlogs(page, count) {
                 var _this = this;
                 var url = '';
-               // _this.$alert(this.state);
                 if (this.state == -2) {
                     url = "/admin/article/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-             //  _this.$alert(url);
                 } else {
-                  //  _this.$alert("sff");
                     url = "/article/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
                 }
                 getRequest(url).then(resp => {
-              //  _this.$alert(url);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.articles = resp.data.articles;
@@ -240,7 +224,6 @@
             },
             handleEdit(index, row) {
                 let _this = this;
-               // _this.$alert(this.activeName);
                 this.$router.push({path: '/editBlog', query: {from: this.activeName, id: row.id}});
             },
             handleDelete(index, row) {

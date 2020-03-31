@@ -9,17 +9,16 @@
   </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="sysMsg">公告</el-dropdown-item>
-<!--            <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>-->
+            <!--            <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>-->
             <el-dropdown-item command="MyHome">个人主页</el-dropdown-item>
-<!--            <router-link to="register"><el-button type="primary" style="width: 40%;background: #505458;border: none">注册</el-button></router-link>-->
+            <!--            <router-link to="register"><el-button type="primary" style="width: 40%;background: #505458;border: none">注册</el-button></router-link>-->
             <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
-
           </el-dropdown-menu>
         </el-dropdown>
       </div>
     </el-header>
     <el-container>
-<!--      左边菜单-->
+      <!--      左边菜单-->
       <el-aside width="200px">
         <el-menu
           default-active="0"
@@ -49,7 +48,7 @@
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
           </el-breadcrumb>
-<!--          页面显示-->
+          <!--          页面显示-->
           <keep-alive>
             <router-view v-if="this.$route.meta.keepAlive"></router-view>
           </keep-alive>
@@ -58,69 +57,61 @@
       </el-container>
     </el-container>
   </el-container>
-
 </template>
 <script>
-  import {getRequest} from '../utils/api'
-  export default{
-    methods: {
+    import {getRequest} from '../utils/api'
 
-      handleCommand(command){
-        var _this = this;
-        if (command === 'logout') {
-          this.$confirm('注销登录吗?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(function () {
-            getRequest("/logout")
-            _this.currentUserName = '游客';
-            _this.$router.replace({path: '/'});
-          }, function () {
-            //取消
-          })
-        }else if(command==='sysMsg'){
+    export default {
+        methods: {
+            handleCommand(command) {
+                var _this = this;
+                if (command === 'logout') {
+                    this.$confirm('注销登录吗?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function () {
+                        getRequest("/logout")
+                        _this.currentUserName = '游客';
+                        _this.$router.replace({path: '/'});
+                    }, function () {
+                        //取消
+                    })
+                } else if (command === 'sysMsg') {
+                    getRequest("/notice/sys").then(function (msg) {
+                        _this.$alert(msg.data);
+                        _this.$alert(msg.data.message, msg.data.title, {
+                            confirmButtonText: '确定',
+                            callback: action => {
+                            }
+                        });
+                    });
+                } else if (command === 'UpdatePwd') {
+                }
+            }
+        },
+        mounted: function () {
             getRequest("/notice/sys").then(function (msg) {
-                  _this.$alert(msg.data);
+                _this.$alert(msg.data);
                 _this.$alert(msg.data.message, msg.data.title, {
-                    confirmButtonText:'确定',
-                    callback:action => {
-
+                    confirmButtonText: '确定',
+                    callback: action => {
                     }
                 });
-
             });
-
-        }else if(command==='UpdatePwd'){
-
+            var _this = this;
+            getRequest("/currentUserName").then(function (msg) {
+                _this.currentUserName = msg.data;
+            }, function (msg) {
+                _this.currentUserName = '游客';
+            });
+        },
+        data() {
+            return {
+                currentUserName: ''
+            }
         }
-
-      }
-    },
-    mounted: function () {
-        getRequest("/notice/sys").then(function (msg) {
-            _this.$alert(msg.data);
-            _this.$alert(msg.data.message, msg.data.title, {
-                confirmButtonText:'确定',
-                callback:action => {
-
-                }
-            });
-
-        });
-      var _this = this;
-      getRequest("/currentUserName").then(function (msg) {
-        _this.currentUserName = msg.data;
-      }, function (msg) {
-        _this.currentUserName = '游客';
-      });
-    },
-    data(){
-      return {
-        currentUserName: ''
-      }
     }
-  }
 </script>
 <style>
   .home_container {

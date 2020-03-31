@@ -3,64 +3,69 @@
     <el-main class="main">
       <el-tabs v-model="activeName" @tab-click="handleClick" type="card">
         <el-tab-pane label="所有文章" name="all">
-          <blog_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false" :activeName="activeName"></blog_table>
+          <blog_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
         <el-tab-pane label="已发表" name="post">
-          <blog_table state="1" :showEdit="true" :showDelete="true" :showRestore="false" :activeName="activeName"></blog_table>
+          <blog_table state="1" :showEdit="true" :showDelete="true" :showRestore="false"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
         <el-tab-pane label="草稿箱" name="draft">
-          <blog_table state="0" :showEdit="true" :showDelete="true" :showRestore="false" :activeName="activeName"></blog_table>
+          <blog_table state="0" :showEdit="true" :showDelete="true" :showRestore="false"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
         <el-tab-pane label="回收站" name="dustbin">
-          <blog_table state="2" :showEdit="false" :showDelete="true" :showRestore="true" :activeName="activeName"></blog_table>
+          <blog_table state="2" :showEdit="false" :showDelete="true" :showRestore="true"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
-        <el-tab-pane label="浏览文章" name="seeblog" >
-          <blog_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false" :activeName="activeName"></blog_table>
+        <el-tab-pane label="浏览文章" name="seeblog">
+          <blog_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
         <el-tab-pane label="文章管理" name="blogmana" v-if="isAdmin">
-          <blog_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false" :activeName="activeName"></blog_table>
+          <blog_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false"
+                      :activeName="activeName"></blog_table>
         </el-tab-pane>
-<!--        <el-tab-pane label="文章配置" name="blogcfg">-->
-<!--          <blog_cfg></blog_cfg>-->
-<!--        </el-tab-pane>-->
+        <!--        <el-tab-pane label="文章配置" name="blogcfg">-->
+        <!--          <blog_cfg></blog_cfg>-->
+        <!--        </el-tab-pane>-->
       </el-tabs>
     </el-main>
   </el-container>
 </template>
 <script>
-  import BlogTable from '@/components/BlogTable'
-  import BlogCfg from '@/components/BlogCfg'
-  import {postRequest} from '../utils/api'
-  import {putRequest} from '../utils/api'
-  import {deleteRequest} from '../utils/api'
-  import {getRequest} from '../utils/api'
-  export default {
-    mounted: function () {
-      var _this = this;
-      getRequest("/isArticle").then(resp=> {
+    import BlogTable from '@/components/BlogTable'
+    import BlogCfg from '@/components/BlogCfg'
+    import {postRequest} from '../utils/api'
+    import {putRequest} from '../utils/api'
+    import {deleteRequest} from '../utils/api'
+    import {getRequest} from '../utils/api'
 
-        if (resp.status == 200) {
-         //  _this.$alert(resp.data+"article");
-          _this.isAdmin = resp.data;
-        }
-      })
-    },
-    data() {
-      return {
-        activeName: 'post',
-        isAdmin: false
-      };
-    },
-    methods: {
-      handleClick(tab, event) {
+    export default {
+        mounted: function () {
+            var _this = this;
+            getRequest("/isArticle").then(resp => {
+                if (resp.status == 200) {
+                    _this.isAdmin = resp.data;
+                }
+            })
+        },
+        data() {
+            return {
+                activeName: 'post',
+                isAdmin: false
+            };
+        },
+        methods: {
+            handleClick(tab, event) {
 //        console.log(tab, event);
-      }
-    },
-    components: {
-      'blog_table': BlogTable,
-      'blog_cfg': BlogCfg
-    }
-  };
+            }
+        },
+        components: {
+            'blog_table': BlogTable,
+            'blog_cfg': BlogCfg
+        }
+    };
 </script>
 <style>
   .article_list > .header {

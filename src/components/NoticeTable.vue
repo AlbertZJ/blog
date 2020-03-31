@@ -103,7 +103,7 @@
                 currentPage: 1,
                 totalCount: -1,
                 pageSize: 6,
-                 keywords: '',
+                keywords: '',
                 dustbinData: []
             }
         },
@@ -139,26 +139,20 @@
             loadBlogs(page, count) {
                 var _this = this;
                 var url = '';
-               // _this.$alert(this.state);
                 if (this.state == -2) {
                     url = "/admin/notice/all" + "?page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-             //  _this.$alert(url+"jhg");
                 } else {
                     url = "/notice/all?state=" + this.state + "&page=" + page + "&count=" + count + "&keywords=" + this.keywords;
-             //  _this.$alert(url);
                 }
                 getRequest(url).then(resp => {
-                  //  _this.$alert(resp.data);
                     _this.loading = false;
                     if (resp.status == 200) {
                         _this.notice = resp.data.notice;
                         _this.totalCount = resp.data.totalCount;
-                      // _this.$alert( _this.notice );
                     } else {
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
                 }, resp => {
-                  //  _this.$alert("sadfasfd");
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({type: 'error', message: resp.response.data});
@@ -166,7 +160,6 @@
                         _this.$message({type: 'error', message: '数据加载失败!'});
                     }
                 }).catch(resp => {
-                    // _this.$alert("sadfhonslsmjo");
                     //压根没见到服务器
                     _this.loading = false;
                     _this.$message({type: 'error', message: '数据加载失败!'});
@@ -177,7 +170,6 @@
             },
             handleEdit(index, row) {
                 // let _this = this;
-                // _this.$alert(row.message);
                 this.$router.push({path: '/editNotice', query: {from: this.noticeName, id: row.id}});
             },
             handleDelete(index, row) {
@@ -229,7 +221,6 @@
                         if (resp.status == 200) {
                             var data = resp.data;
                             _this.$message({type: data.status, message: data.msg});
-                          //  _this.$alert(data.status);
                             if (data.status == 'success') {
                                 window.bus.$emit('noticeTableReload')  // 通过选项卡都重新加载数据
                             }

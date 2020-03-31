@@ -65,15 +65,16 @@
     import {putRequest} from '../utils/api'
     import {deleteRequest} from '../utils/api'
     import {getRequest} from '../utils/api'
-    export default{
+
+    export default {
         methods: {
-            deleteAll(){
+            deleteAll() {
                 var _this = this;
                 this.$confirm('确认删除这 ' + this.selItems.length + ' 条数据?', '提示', {
                     type: 'warning',
                     confirmButtonText: '确定',
                     cancelButtonText: '取消'
-                }).then(()=> {
+                }).then(() => {
                     var selItems = _this.selItems;
                     var ids = '';
                     for (var i = 0; i < selItems.length; i++) {
@@ -88,7 +89,7 @@
             handleSelectionChange(val) {
                 this.selItems = val;
             },
-            handleEdit(index, row){
+            handleEdit(index, row) {
                 var _this = this;
                 this.$prompt('请输入新名称', '编辑', {
                     confirmButtonText: '更新',
@@ -103,14 +104,14 @@
                         });
                     } else {
                         _this.loading = true;
-                        putRequest("/admin/comment/update", {id: row.id, content: value}).then(resp=> {
+                        putRequest("/admin/comment/update", {id: row.id, content: value}).then(resp => {
                             var json = resp.data;
                             _this.$message({
                                 type: json.status,
                                 message: json.msg
                             });
                             _this.refresh();
-                        }, resp=> {
+                        }, resp => {
                             if (resp.response.status == 403) {
                                 _this.$message({
                                     type: 'error',
@@ -122,7 +123,7 @@
                     }
                 });
             },
-            handleDelete(index, row){
+            handleDelete(index, row) {
                 let _this = this;
                 this.$confirm('确认删除 ' + row.content + ' ?', '提示', {
                     confirmButtonText: '确定',
@@ -135,18 +136,18 @@
                     _this.loading = false;
                 });
             },
-            deleteComment(ids){
+            deleteComment(ids) {
                 var _this = this;
                 this.loading = true;
                 //删除
-                deleteRequest("/admin/comment/delete" + ids).then(resp=> {
+                deleteRequest("/admin/comment/delete" + ids).then(resp => {
                     var json = resp.data;
                     _this.$message({
                         type: json.status,
                         message: json.msg
                     });
                     _this.refresh();
-                }, resp=> {
+                }, resp => {
                     _this.loading = false;
                     if (resp.response.status == 403) {
                         _this.$message({
@@ -161,13 +162,12 @@
                     }
                 })
             },
-            refresh(){
+            refresh() {
                 let _this = this;
-                getRequest("/admin/comment/all").then(resp=> {
+                getRequest("/admin/comment/all").then(resp => {
                     _this.comment = resp.data;
-                   // _this.$alert(_this.comment);
                     _this.loading = false;
-                }, resp=> {
+                }, resp => {
                     if (resp.response.status == 403) {
                         _this.$message({
                             type: 'error',
@@ -182,11 +182,11 @@
             this.loading = true;
             this.refresh();
         },
-        data(){
+        data() {
             return {
                 selItems: [],
                 comment: [],
-               // pageSize: 6,
+                // pageSize: 6,
                 loading: false
             }
         }
