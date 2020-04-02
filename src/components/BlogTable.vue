@@ -1,13 +1,3 @@
-<style type="text/css">
-  .blog_table_footer {
-    display: flex;
-    box-sizing: content-box;
-    padding-top: 10px;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    justify-content: space-between;
-  }
-</style>
 <template>
   <div>
     <div style="display: flex;justify-content: flex-start">
@@ -300,3 +290,16 @@
         props: ['state', 'showEdit', 'showDelete', 'activeName', 'showRestore']
     }
 </script>
+
+<style type="text/css">
+  .blog_table_footer {
+    display: flex;
+    box-sizing: content-box;
+    padding-top: 10px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+    justify-content: space-between;
+  }
+</style>
+
+

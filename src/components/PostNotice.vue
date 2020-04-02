@@ -1,10 +1,10 @@
 <template>
-  <el-container v-loading="loading" class="post-article">
-    <el-header class="header">
+  <el-container v-loading="loading" class="post-article" >
+    <el-header class="header"  >
       <el-input v-model="notice.title" placeholder="请输入标题..." style="width: 400px;margin-left: 10px"
-                v-if="isAdmin"></el-input>
+                v-if="isAdmin"  ></el-input>
     </el-header>
-    <el-main class="main" v-if="isAdmin">
+    <el-main class="main" v-if="isAdmin" >
       <div id="editor">
         <mavon-editor style="height: 100%;width: 100%;" ref=md @imgAdd="imgAdd"
                       @imgDel="imgDel" v-model="notice.mdContent"></mavon-editor>
@@ -39,18 +39,18 @@
     export default {
         mounted: function () {
             var _this = this;
+            getRequest("/isNotice").then(resp => {
+                if (resp.status == 200) {
+                    _this.isAdmin = resp.data;
+                }
+            });
             var from = this.$route.query.from;
             this.from = from;
             if (from != null && from != '' && from != undefined) {
                 var id = this.$route.query.id;
                 this.id = id;
+
                 this.loading = true;
-                var _this = this;
-                getRequest("/isNotice").then(resp => {
-                    if (resp.status == 200) {
-                        _this.isAdmin = resp.data;
-                    }
-                });
                 getRequest("/notice/" + id).then(resp => {
                     _this.loading = false;
                     if (resp.status == 200) {
@@ -146,6 +146,7 @@
             return {
                 loading: false,
                 from: '',
+                isAdmin:true,
                 notice: {
                     id: '-1',
                     //  dynamicTags: [],
@@ -158,6 +159,7 @@
         }
     }
 </script>
+
 <style>
   .post-article > .main > #editor {
     width: 100%;

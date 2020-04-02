@@ -6,7 +6,7 @@
           <notice_table state="-1" :showEdit="false" :showDelete="false" :showRestore="false"
                         :noticeName="noticeName"></notice_table>
         </el-tab-pane>
-        <el-tab-pane label="已发表" name="post" v-if="isAdmin">
+        <el-tab-pane label="已发表" name="old" v-if="isAdmin">
           <notice_table state="1" :showEdit="true" :showDelete="true" :showRestore="false"
                         :noticeName="noticeName"></notice_table>
         </el-tab-pane>
@@ -22,7 +22,7 @@
           <notice_table state="-2" :showEdit="false" :showDelete="true" :showRestore="false"
                         :noticeName="noticeName"></notice_table>
         </el-tab-pane>
-        <el-tab-pane label="公告历史" name="old">
+        <el-tab-pane label="公告历史" name="post">
           <notice_table state="-2" :showEdit="false" :showDelete="false" :showRestore="false"
                         :noticeName="noticeName"></notice_table>
         </el-tab-pane>
