@@ -2,11 +2,13 @@
   <el-container class="home_container">
     <el-header>
       <div class="home_title">微社区管理</div>
+<!--      <i class="el-icon-remove-outline" v-on:click="logout" style="float:right;font-size: 40px;color: white;padding: 10px"></i>-->
       <div class="home_userinfoContainer">
         <el-dropdown @command="handleCommand">
   <span class="el-dropdown-link home_userinfo">
     {{currentUserName}}<i class="el-icon-arrow-down el-icon--right home_userinfo"></i>
   </span>
+
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="sysMsg">公告</el-dropdown-item>
             <!--            <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>-->
@@ -49,11 +51,23 @@
             <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
           </el-breadcrumb>
           <!--          页面显示-->
+<!--          <el-carousel :interval="4000" type="card" height="200px">-->
+<!--            <el-carousel-item v-for="item in 6" :key="item">-->
+<!--&lt;!&ndash;              <h3>{{item}}</h3>&ndash;&gt;-->
+<!--              <img src="../assets/img/bg/1.jpg"/>-->
+<!--            </el-carousel-item>-->
+<!--          </el-carousel>-->
+
           <keep-alive>
             <router-view v-if="this.$route.meta.keepAlive"></router-view>
           </keep-alive>
           <router-view v-if="!this.$route.meta.keepAlive"></router-view>
         </el-main>
+        <el-footer>
+          <div >
+            <p>Copyright &copy; https://github.com/AlbertZJ </p>
+          </div>
+        </el-footer>
       </el-container>
     </el-container>
   </el-container>
@@ -63,6 +77,19 @@
 
     export default {
         methods: {
+            logout(){
+                this.$confirm('注销登录吗?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    getRequest("/logout")
+                    _this.currentUserName = '游客';
+                    _this.$router.replace({path: '/'});
+                }, function () {
+                    //取消
+                });
+            },
             handleCommand(command) {
                 var _this = this;
                 if (command === 'logout') {
@@ -79,7 +106,7 @@
                     })
                 } else if (command === 'sysMsg') {
                     getRequest("/notice/sys").then(function (msg) {
-                        _this.$alert(msg.data);
+                      //  _this.$alert(msg.data);
                         _this.$alert(msg.data.message, msg.data.title, {
                             confirmButtonText: '确定',
                             callback: action => {
@@ -91,8 +118,14 @@
             }
         },
         mounted: function () {
+            var _this=this;
+            getRequest("/isAdmin").then(resp => {
+                if (resp.status == 200) {
+                    _this.isAdmin = resp.data;
+                }
+            });
             getRequest("/notice/sys").then(function (msg) {
-                _this.$alert(msg.data);
+              //  _this.$alert(msg.data);
                 _this.$alert(msg.data.message, msg.data.title, {
                     confirmButtonText: '确定',
                     callback: action => {
@@ -155,5 +188,21 @@
   .home_userinfoContainer {
     display: inline;
     margin-right: 20px;
+  }
+
+  .el-carousel__item h3 {
+    color: #475669;
+    font-size: 14px;
+    opacity: 0.75;
+    line-height: 200px;
+    margin: 0;
+  }
+
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
+
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #d3dce6;
   }
 </style>

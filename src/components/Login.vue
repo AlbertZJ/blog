@@ -7,7 +7,7 @@
       <el-input type="text" v-model="loginForm.username" auto-complete="off" placeholder="账号"></el-input>
     </el-form-item>
     <el-form-item prop="checkPass">
-      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="密码"></el-input>
+      <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码" show-password></el-input>
     </el-form-item>
     <el-checkbox class="login_remember" v-model="checked" label-position="left"><span style="color: #505458">记住密码</span>
     </el-checkbox>
@@ -26,8 +26,8 @@
         data() {
             return {
                 rules: {
-                    account: [{required: true, message: '账号不能为空', trigger: 'blur'}],
-                    checkPass: [{required: true, message: '密码不能为空', trigger: 'blur'}]
+                    account: [{required: true, message: '账号不能为空！', trigger: 'blur'}],
+                    checkPass: [{required: true, message: '密码不能为空！', trigger: 'blur'}]
                 },
                 checked: true,
                 loginForm: {
@@ -56,7 +56,7 @@
                         }
                     } else {
                         //失败
-                        _this.$alert('账号或密码错误!', '登录失败!');
+                         _this.$alert('账号或密码错误!', '登录失败!');
                     }
                 }, resp => {
                     _this.loading = false;

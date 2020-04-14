@@ -27,7 +27,13 @@
       </div>
     </el-col>
     <el-header class="cate_mana_header">
+<!--      <el-input-->
+<!--        placeholder="请输入内容"-->
+<!--        v-model="content" style="width: 400px;">-->
+<!--      </el-input>-->
       <el-input
+        type="textarea"
+        :rows="2"
         placeholder="请输入内容"
         v-model="content" style="width: 400px;">
       </el-input>

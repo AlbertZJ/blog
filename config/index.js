@@ -10,6 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    // 跨域支持
     proxyTable: {
       '/': {
         target: 'http://localhost:8081',

@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/components/Login'
+import Login from '../components/Login'
 import CommentMana from "../components/CommentMana";
 import RoleMana from "../components/RoleMana";
-import Register from '@/components/Register'
-import Home from '@/components/Home'
-import ArticleList from '@/components/ArticleList'
-import CateMana from '@/components/CateMana'
-import DataCharts from '@/components/DataCharts'
-import PostArticle from '@/components/PostArticle'
-import UserMana from '@/components/UserMana'
-import BlogDetail from '@/components/BlogDetail'
+import Register from '../components/Register'
+import Home from '../components/Home'
+import ArticleList from '../components/ArticleList'
+import CateMana from '../components/CateMana'
+import DataCharts from '../components/DataCharts'
+import PostArticle from '../components/PostArticle'
+import UserMana from '../components/UserMana'
+import BlogDetail from '../components/BlogDetail'
 import NoticeMana from "../components/NoticeMana";
 import NoticeCfg from "../components/NoticeCfg";
 import NoticeTable from "../components/NoticeTable";
@@ -28,6 +28,7 @@ import TeamTable from "../components/TeamTable";
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
       path: '/',
@@ -42,7 +43,7 @@ export default new Router({
       component: Register
     }, {
       path: '/home',
-      name: '',
+      name: '主页',
       component: Home,
       hidden: true
     },

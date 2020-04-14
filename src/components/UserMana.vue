@@ -9,17 +9,36 @@
       <el-button type="primary" icon="el-icon-search" size="small" style="margin-left: 3px" @click="searchClick">搜索
       </el-button>
     </div>
-    <el-header class="cate_mana_header" v-if="isAdmin">
-      <el-input
-        placeholder="请输入账号"
-        v-model="username" style="width: 200px;">
-      </el-input>
-      <el-input
-        placeholder="请输入密码"
-        v-model="password" style="width: 200px;">
-      </el-input>
-      <el-button type="primary" size="medium" style="margin-left: 10px" @click="addUser">新增用户</el-button>
-    </el-header>
+<!--    <el-header class="cate_mana_header" v-if="isAdmin">-->
+<!--      <el-input-->
+<!--        placeholder="请输入账号"-->
+<!--        v-model="username" style="width: 200px;">-->
+<!--      </el-input>-->
+<!--      <el-input-->
+<!--        placeholder="请输入密码"-->
+<!--        v-model="password" style="width: 200px;">-->
+<!--      </el-input>-->
+<!--      <el-button type="primary" size="medium" style="margin-left: 10px" @click="addUser">新增用户</el-button>-->
+      <!-- Form -->
+      <el-button type="primary" @click="dialogFormVisible = true" size="medium" style="margin-left: 3px;" v-if="isAdmin" >添加社员</el-button>
+
+      <el-dialog title="添加社员" :visible.sync="dialogFormVisible" >
+        <el-form :model="form">
+          <el-form-item label="账号:" :label-width="formLabelWidth">
+            <el-input v-model="username" auto-complete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="密码:" :label-width="formLabelWidth">
+            <el-input v-model="password" auto-complete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addUser">确 定</el-button>
+        </div>
+      </el-dialog>
+
+
+<!--    </el-header>-->
     <div style="display: flex;justify-content: space-around;flex-wrap: wrap">
       <el-card style="width:330px;margin-top: 10px;" v-for="(user,index) in users" :key="index"
                v-loading="cardloading[index]">
@@ -30,7 +49,10 @@
           </el-button>
         </div>
         <div>
-          <div><img :src="user.userface" :alt="user.nickname" style="width: 70px;height: 70px"></div>
+          <div>
+            <img :src="user.userface" :alt="user.nickname" style="width: 70px;height: 70px">
+<!--            <el-avatar :src="user.userface" :alt="user.nickname" ></el-avatar>-->
+          </div>
           <div style="text-align: left;color:#20a0ff;font-size: 12px;margin-top: 13px">
             <span>账号:</span><span>{{user.username}}</span>
           </div>
@@ -85,10 +107,10 @@
     </div>
   </div>
 </template>
-<script>
-    import {getRequest, postRequest} from '../utils/api'
+<script>    import {deleteRequest} from '../utils/api'
+
+import {getRequest, postRequest} from '../utils/api'
     import {putRequest} from '../utils/api'
-    import {deleteRequest} from '../utils/api'
 
     export default {
         mounted: function () {
@@ -282,7 +304,8 @@
                 users: [],
                 allRoles: [],
                 roles: [],
-                cpRoles: []
+                cpRoles: [],
+                dialogFormVisible : false,
             }
         }
     }
