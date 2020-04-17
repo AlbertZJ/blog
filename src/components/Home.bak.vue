@@ -6,9 +6,10 @@
     <el-col :span="12" class="header">
       <div class="userinfoContainer">
         <el-dropdown @command="handleCommand">
-  <span class="el-dropdown-link userinfo">
-    {{currentUserName}}<i class="el-icon-arrow-down el-icon--right userinfo"></i>
-  </span>
+          <span class="el-dropdown-link userinfo">
+            {{currentUserName}}
+            <i class="el-icon-arrow-down el-icon--right userinfo"></i>
+          </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="sysMsg">系统消息</el-dropdown-item>
             <el-dropdown-item command="MyArticle">我的文章</el-dropdown-item>
@@ -23,7 +24,9 @@
         <el-aside width="200px">
           <el-menu
             default-active="0"
-            class="el-menu-vertical-demo" style="background-color: rgba(0, 0, 0, 0.08)">
+            class="el-menu-vertical-demo"
+            style="background-color: rgba(0, 0, 0, 0.08)"
+          >
             <el-submenu index="1">
               <template slot="title">
                 <i class="el-icon-location"></i>
@@ -91,38 +94,38 @@
         }
 </script>
 <style>
-  .container {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    background-color: rgba(235, 235, 235, 0.08);
-  }
+.container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  background-color: rgba(235, 235, 235, 0.08);
+}
 
-  .header {
-    background-color: #20a0ff;
-    height: 60px;
-  }
+.header {
+  background-color: #20a0ff;
+  height: 60px;
+}
 
-  .title {
-    color: #fff;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    margin-left: 20px;
-    height: 60px;
-  }
+.title {
+  color: #fff;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  height: 60px;
+}
 
-  .userinfo {
-    color: #fff;
-    cursor: pointer;
-  }
+.userinfo {
+  color: #fff;
+  cursor: pointer;
+}
 
-  .userinfoContainer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    height: 60px;
-    margin-right: 20px;
-  }
+.userinfoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 60px;
+  margin-right: 20px;
+}
 </style>

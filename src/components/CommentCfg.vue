@@ -1,13 +1,10 @@
-<template>
-
-</template>
+<template></template>
 
 <script>
-    export default {
-        name: "CommentCfg"
-    }
+export default {
+  name: "CommentCfg"
+};
 </script>
 
 <style scoped>
-
 </style>

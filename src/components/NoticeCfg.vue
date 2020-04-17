@@ -1,13 +1,10 @@
-<template>
-
-</template>
+<template></template>
 
 <script>
-    export default {
-        name: "NoticeCfg"
-    }
+export default {
+  name: "NoticeCfg"
+};
 </script>
 
 <style scoped>
-
 </style>
